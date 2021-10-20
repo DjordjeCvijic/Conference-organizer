@@ -12,21 +12,17 @@ import javax.persistence.*;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "grading_subject")
-public class GradingSubject {
 
+@Entity
+@Table(name = "event_type")
+public class EventType {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int gradingSubjectId;
+    private Integer event_type_id;
 
-    @Column(name="name",nullable = false)
+    @Column(name = "name",nullable = false)
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "conference_id",nullable = false)
-    private Conference conference;
 
 
 }

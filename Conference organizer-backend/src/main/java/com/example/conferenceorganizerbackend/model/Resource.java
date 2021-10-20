@@ -1,6 +1,5 @@
 package com.example.conferenceorganizerbackend.model;
 
-
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
@@ -13,20 +12,14 @@ import javax.persistence.*;
 @AllArgsConstructor
 @NoArgsConstructor
 @Entity
-@Table(name = "grading_subject")
-public class GradingSubject {
+@Table(name = "resource")
+public class Resource {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int gradingSubjectId;
+    private Integer resourceId;
 
     @Column(name="name",nullable = false)
     private String name;
-
-    @ManyToOne
-    @JoinColumn(name = "conference_id",nullable = false)
-    private Conference conference;
-
-
 }

@@ -15,12 +15,11 @@ import javax.persistence.*;
 @Table(name = "place")
 public class Place {
 
-
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int placeId;
+    private Integer placeId;
 
-    @Column(name="name")
+    @Column(name="name",nullable = false)
     private String name;
 
     @Column(name = "number_of_places")

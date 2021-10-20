@@ -20,26 +20,45 @@ public class Event {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int eventId;
 
-    @Column(name="name")
+    @Column(name="name",nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description",nullable = false)
     private String description;
 
-    @Column(name = "date_from")
+    @Column(name = "date_from",nullable = false)
     private LocalDateTime dateFrom;
 
-    @Column(name = "date_to")
+    @Column(name = "date_to",nullable = false)
     private LocalDateTime dateTo;
 
-    @Column(name = "is_online")
-    private Boolean isOnline;
 
     @Column(name = "access_link")
     private LocalDateTime accessLink;
 
     @Column(name = "access_password")
     private LocalDateTime accessPassword;
+
+    @ManyToOne
+    @JoinColumn(name = "lecturer_id")
+    private Person lecturer;
+
+    @ManyToOne
+    @JoinColumn(name = "moderator_id", nullable = false)
+    private Person Moderator;
+
+    @ManyToOne
+    @JoinColumn(name = "place_id",nullable = false)
+    private Place place;
+
+    @ManyToOne
+    @JoinColumn(name = "event_type_id",nullable = false)
+    private EventType eventType;
+
+    @ManyToOne
+    @JoinColumn(name = "session_id",nullable = false)
+    private Session session;
+
 
     //gale strani kljucevi
 }
