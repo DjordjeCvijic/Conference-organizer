@@ -1,6 +1,6 @@
 import 'package:conference_organizer_app/providers/auth_provider.dart';
 import 'package:conference_organizer_app/screens/login_screen.dart';
-import 'package:conference_organizer_app/screens/main_screen.dart';
+import 'package:conference_organizer_app/screens/navigation_drawer.dart';
 import 'package:conference_organizer_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -37,7 +37,7 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         globals.registrationScreenRoute: (ctx) => const RegistrationScreen(),
-        globals.mainScreenRoute: (ctx) => const MainScreen()
+        globals.navigatorDrawerRoute: (ctx) => const NavigationDrawer()
       },
     );
   }

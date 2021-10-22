@@ -16,6 +16,9 @@ class RegistrationScreen extends StatelessWidget {
     return ChangeNotifierProvider.value(
         value: AuthProvider(),
         builder: (context, child) => Scaffold(
+              appBar: AppBar(
+                title: Text('Conference Organizer'),
+              ),
               body: SingleChildScrollView(
                 child: Padding(
                   padding: const EdgeInsets.fromLTRB(550, 100, 550, 10),

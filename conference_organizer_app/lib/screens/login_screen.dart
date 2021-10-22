@@ -16,6 +16,10 @@ class LoginScreen extends StatelessWidget {
     var _passController = TextEditingController();
     final _formKey = GlobalKey<FormState>();
     return Scaffold(
+      appBar: AppBar(
+          title: const Text(
+        'Conference Organizer',
+      )),
       body: SingleChildScrollView(
         child: Padding(
             padding: const EdgeInsets.fromLTRB(550, 150, 550, 10),
@@ -70,8 +74,8 @@ class LoginScreen extends StatelessWidget {
                                           _passController.text)
                                       .then((value) {
                                     if (value) {
-                                      Navigator.pushNamed(
-                                          context, globals.mainScreenRoute);
+                                      Navigator.pushNamed(context,
+                                          globals.navigatorDrawerRoute);
                                     } else {
                                       showDialog(
                                         context: context,
