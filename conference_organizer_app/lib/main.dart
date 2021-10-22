@@ -7,6 +7,8 @@ import 'package:provider/provider.dart';
 import "./globals.dart" as globals;
 
 void main() {
+  // WidgetsFlutterBinding.ensureInitialized();
+  // await Firebase.initializeApp();
   runApp(const MyApp());
 }
 
@@ -21,16 +23,22 @@ class MyApp extends StatelessWidget {
           primarySwatch: Colors.blue,
           scaffoldBackgroundColor: Colors.grey[900],
           textTheme: const TextTheme(
-              headline1: TextStyle(
-                  //za veliko login,registration
-                  fontSize: 50,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white),
-              headline2: TextStyle(
-                  //za iznad text fild-ova
-                  fontSize: 15,
-                  fontWeight: FontWeight.bold,
-                  color: Colors.white))),
+            headline1: TextStyle(
+                //za veliko login,registration
+                fontSize: 50,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+            headline2: TextStyle(
+                //za iznad text fild-ova
+                fontSize: 15,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+            headline3: TextStyle(
+                //za naslove za svaku stanicu
+                fontSize: 28,
+                fontWeight: FontWeight.bold,
+                color: Colors.white),
+          )),
       home: ChangeNotifierProvider(
         create: (context) => AuthProvider(),
         child: const LoginScreen(),

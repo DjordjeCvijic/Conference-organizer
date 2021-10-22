@@ -1,5 +1,6 @@
 package com.example.conferenceorganizerbackend.controller;
 
+import com.example.conferenceorganizerbackend.dto.ConferenceInfoDto;
 import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.services.ConferenceService;
 import javassist.NotFoundException;
@@ -8,6 +9,8 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 @RestController
 @RequestMapping("/conference")
@@ -18,5 +21,10 @@ public class ConferenceController {
     @GetMapping
     public Conference findById(@RequestParam int id) throws NotFoundException {
         return conferenceService.findById(id);
+    }
+
+    @GetMapping("/all")
+    public List<ConferenceInfoDto> getAll(){
+        return conferenceService.getAll();
     }
 }

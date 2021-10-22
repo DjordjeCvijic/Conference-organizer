@@ -1,6 +1,8 @@
+import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/screens/add_conference_sreen.dart';
 import 'package:conference_organizer_app/screens/all_conference_screen.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -14,7 +16,10 @@ class NavigationDrawer extends StatefulWidget {
 class NavigationDrawerState extends State<NavigationDrawer> {
   int _selectedIndex = 0;
   Map<int, dynamic> listOfScreens = {
-    0: const AllConferenceScreen(),
+    0: ChangeNotifierProvider(
+      create: (context) => ConferenceProvider(),
+      child: AllConferenceScreen(),
+    ),
     1: const AddConferenceScreen()
     // 0: ChangeNotifierProvider(
     //   create: (context) => HomeProvider(),
