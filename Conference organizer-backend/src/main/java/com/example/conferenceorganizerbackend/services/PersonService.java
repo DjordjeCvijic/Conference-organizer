@@ -52,4 +52,8 @@ if (!personRepository.existsPersonByEmail(loginRequest.getEmail()))
             return person;
         else throw new NotFoundException("Password is incorrect");
     }
+
+    public Person getById(Integer creatorId) throws NotFoundException {
+        return personRepository.findById(creatorId).orElseThrow(()-> new NotFoundException("Osoba sa id ne postoji"));
+    }
 }

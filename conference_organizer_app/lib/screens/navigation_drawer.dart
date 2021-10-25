@@ -1,8 +1,10 @@
 import 'package:conference_organizer_app/providers/conference_provider.dart';
+import 'package:conference_organizer_app/providers/shared_preferences_service.dart';
 import 'package:conference_organizer_app/screens/add_conference_sreen.dart';
 import 'package:conference_organizer_app/screens/all_conference_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -18,9 +20,12 @@ class NavigationDrawerState extends State<NavigationDrawer> {
   Map<int, dynamic> listOfScreens = {
     0: ChangeNotifierProvider(
       create: (context) => ConferenceProvider(),
-      child: AllConferenceScreen(),
+      child: const AllConferenceScreen(),
     ),
-    1: const AddConferenceScreen()
+    1: ChangeNotifierProvider(
+      create: (constext) => ConferenceProvider(),
+      child: const AddConferenceScreen(),
+    )
     // 0: ChangeNotifierProvider(
     //   create: (context) => HomeProvider(),
     //   child: const HomeScreen(),
@@ -52,6 +57,9 @@ class NavigationDrawerState extends State<NavigationDrawer> {
     Navigator.of(context).pop(); // close the drawer
   }
 
+  late SharedPreferencesService sharedPreferencesService =
+      new SharedPreferencesService();
+
   @override
   Widget build(BuildContext context) {
     var drawerOptions = <Widget>[];
@@ -75,14 +83,38 @@ class NavigationDrawerState extends State<NavigationDrawer> {
       drawer: Drawer(
         child: Column(
           children: [
-            const UserAccountsDrawerHeader(
-                accountName: Text(
-                  "Yuvraj Pandey",
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+            UserAccountsDrawerHeader(
+                accountName: FutureBuilder(
+                  future: sharedPreferencesService.getLogedUserName(),
+                  builder: (ctx, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : snapshot.data != null
+                              ? Text(
+                                  snapshot.data.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              : const Text("nema podataka"),
                 ),
-                accountEmail: Text(
-                  "yuvrajn.pandey@gmail.com",
-                  style: TextStyle(fontSize: 18.0, fontWeight: FontWeight.w500),
+                accountEmail: FutureBuilder(
+                  future: sharedPreferencesService.getLogedUserEmail(),
+                  builder: (ctx, snapshot) =>
+                      snapshot.connectionState == ConnectionState.waiting
+                          ? const Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : snapshot.data != null
+                              ? Text(
+                                  snapshot.data.toString(),
+                                  style: const TextStyle(
+                                      fontSize: 18.0,
+                                      fontWeight: FontWeight.w500),
+                                )
+                              : const Text("nema podataka"),
                 )),
             Column(children: drawerOptions)
           ],

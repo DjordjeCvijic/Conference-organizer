@@ -21,7 +21,7 @@ class ConferenceCard extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                SizedBox(
+                const SizedBox(
                   height: 5,
                 ),
                 Row(
@@ -31,22 +31,22 @@ class ConferenceCard extends StatelessWidget {
                         style: Theme.of(context).textTheme.headline2),
                   ],
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("  mjest ${data!["location"]}",
                     style: Theme.of(context).textTheme.bodyText1),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("  vrijeme od ${data!["dateFrom"]}  ",
                     style: Theme.of(context).textTheme.bodyText1),
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 Text("  vrijeme do ${data!["dateTo"]}",
                     style: Theme.of(context).textTheme.bodyText1),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 Row(

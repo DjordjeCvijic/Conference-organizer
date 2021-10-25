@@ -1,6 +1,8 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:http/http.dart' as http;
 
 import '../const.dart';
@@ -24,6 +26,12 @@ class AuthProvider extends ChangeNotifier {
     );
 
     if (res.statusCode != 200) return false;
+    var tmp = (jsonDecode(utf8.decode(res.bodyBytes)) as Map<String, dynamic>);
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    prefs.setString("personId", tmp["personId"].toString());
+    prefs.setString("firstName", tmp["firstName"].toString());
+    prefs.setString("lastName", tmp["lastName"].toString());
+    prefs.setString("email", tmp["email"].toString());
     return true;
   }
 

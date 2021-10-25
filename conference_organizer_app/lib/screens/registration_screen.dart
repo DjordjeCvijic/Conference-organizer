@@ -17,7 +17,7 @@ class RegistrationScreen extends StatelessWidget {
         value: AuthProvider(),
         builder: (context, child) => Scaffold(
               appBar: AppBar(
-                title: Text('Conference Organizer'),
+                title: const Text('Conference Organizer'),
               ),
               body: SingleChildScrollView(
                 child: Padding(
@@ -30,7 +30,7 @@ class RegistrationScreen extends StatelessWidget {
                       children: [
                         Text("Registration",
                             style: Theme.of(context).textTheme.headline1),
-                        SizedBox(
+                        const SizedBox(
                           height: 20,
                         ),
                         Text(

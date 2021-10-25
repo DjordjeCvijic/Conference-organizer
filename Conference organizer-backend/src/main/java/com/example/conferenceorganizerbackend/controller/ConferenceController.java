@@ -1,14 +1,12 @@
 package com.example.conferenceorganizerbackend.controller;
 
 import com.example.conferenceorganizerbackend.dto.ConferenceInfoDto;
+import com.example.conferenceorganizerbackend.dto.ConferenceRequestDto;
 import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.services.ConferenceService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -27,4 +25,10 @@ public class ConferenceController {
     public List<ConferenceInfoDto> getAll(){
         return conferenceService.getAll();
     }
+
+    @PostMapping("/add")
+    public Conference save(@RequestBody ConferenceRequestDto conferenceRequestDto) throws NotFoundException {
+        return conferenceService.save(conferenceRequestDto);
+    }
+
 }

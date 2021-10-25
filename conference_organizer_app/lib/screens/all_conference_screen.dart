@@ -1,20 +1,17 @@
-import 'dart:js';
-
 import 'package:conference_organizer_app/providers/conference_provider.dart';
-import 'package:conference_organizer_app/screens/test_screen.dart';
 import 'package:conference_organizer_app/widgets/conference_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 class AllConferenceScreen extends StatelessWidget {
-  AllConferenceScreen({Key? key}) : super(key: key);
+  const AllConferenceScreen({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     final conferenceProvider = Provider.of<ConferenceProvider>(context);
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Text(
@@ -29,7 +26,7 @@ class AllConferenceScreen extends StatelessWidget {
                     ? const CircularProgressIndicator()
                     : snapshot.data != null && snapshot.data!.isNotEmpty
                         ? Padding(
-                            padding: EdgeInsets.fromLTRB(100, 50, 100, 0),
+                            padding: const EdgeInsets.fromLTRB(100, 50, 100, 0),
                             child: GridView.count(
                               shrinkWrap: true,
                               primary: false,
@@ -47,7 +44,7 @@ class AllConferenceScreen extends StatelessWidget {
                           )
                         : Center(
                             child: Text(
-                              "localization.no_fav_data,",
+                              "Nema podataka,",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           )),

@@ -23,7 +23,7 @@ public class Conference {
     @Column(name = "name",nullable = false)
     private String name;
 
-    @Column(name = "description")
+    @Column(name = "description",nullable = false)
     private String description;
 
     @Column(name = "date_from",nullable = false)
@@ -32,16 +32,13 @@ public class Conference {
     @Column(name = "date_to",nullable = false)
     private LocalDateTime dateTo;
 
-    @Column(name = "image_path")
-    private String imagePath;
-
     @ManyToOne
     @JoinColumn(name = "location_id",nullable = false)
-    Location location;
+    private Location location;
 
     @ManyToOne
     @JoinColumn(name = "creator_id",nullable = false)
-    Person creator;
+    private Person creator;
 
 
 }
