@@ -6,6 +6,22 @@ import 'package:http/http.dart' as http;
 import '../const.dart';
 
 class ConferenceProvider extends ChangeNotifier {
+  late String _dateFrom = "";
+  late String _dateTo = "";
+
+  ConferenceProvider();
+  String get dateFrom => _dateFrom;
+
+  String get dateTo => _dateTo;
+
+  setDateFrom(String s) {
+    _dateFrom = s;
+  }
+
+  setDateTo(String s) {
+    _dateTo = s;
+  }
+
   Future<List<Map<String, dynamic>>?> getAllConferences() async {
     var apiUrl = Constants.baseUrl;
 
