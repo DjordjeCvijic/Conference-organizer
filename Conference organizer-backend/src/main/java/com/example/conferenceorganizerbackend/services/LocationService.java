@@ -8,6 +8,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 @Service
 public class LocationService {
     @Autowired
@@ -15,5 +17,9 @@ public class LocationService {
 
     public Location getById(Integer locationId) throws NotFoundException {
         return locationRepository.findById(locationId).orElseThrow(()-> new NotFoundException("Locacija sa id ne postoji"));
+    }
+
+    public List<Location> getAll() {
+        return locationRepository.findAll();
     }
 }

@@ -1,10 +1,10 @@
 import 'package:conference_organizer_app/providers/conference_provider.dart';
+import 'package:conference_organizer_app/providers/location_provider.dart';
 import 'package:conference_organizer_app/providers/shared_preferences_service.dart';
 import 'package:conference_organizer_app/screens/add_conference_sreen.dart';
 import 'package:conference_organizer_app/screens/all_conference_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class NavigationDrawer extends StatefulWidget {
   const NavigationDrawer({Key? key}) : super(key: key);
@@ -22,9 +22,16 @@ class NavigationDrawerState extends State<NavigationDrawer> {
       create: (context) => ConferenceProvider(),
       child: const AllConferenceScreen(),
     ),
-    1: ChangeNotifierProvider(
-      create: (constext) => ConferenceProvider(),
-      child: const AddConferenceScreen(),
+    1: MultiProvider(
+      providers: [
+        ChangeNotifierProvider(
+          create: (_) => ConferenceProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => LocationProvider(),
+        )
+      ],
+      builder: (context, child) => const AddConferenceScreen(),
     )
     // 0: ChangeNotifierProvider(
     //   create: (context) => HomeProvider(),
@@ -58,7 +65,7 @@ class NavigationDrawerState extends State<NavigationDrawer> {
   }
 
   late SharedPreferencesService sharedPreferencesService =
-      new SharedPreferencesService();
+      SharedPreferencesService();
 
   @override
   Widget build(BuildContext context) {

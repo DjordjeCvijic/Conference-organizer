@@ -6,21 +6,7 @@ import 'package:http/http.dart' as http;
 import '../const.dart';
 
 class ConferenceProvider extends ChangeNotifier {
-  late String _dateFrom = "";
-  late String _dateTo = "";
-
-  ConferenceProvider();
-  String get dateFrom => _dateFrom;
-
-  String get dateTo => _dateTo;
-
-  setDateFrom(String s) {
-    _dateFrom = s;
-  }
-
-  setDateTo(String s) {
-    _dateTo = s;
-  }
+  ConferenceToSave conferenceToSave = ConferenceToSave();
 
   Future<List<Map<String, dynamic>>?> getAllConferences() async {
     var apiUrl = Constants.baseUrl;
@@ -43,5 +29,87 @@ class ConferenceProvider extends ChangeNotifier {
         .toList();
 
     return resList;
+  }
+}
+
+class ConferenceToSave {
+  late String _dateFrom = "";
+  late String _dateTo = "";
+  late int _locationId = 0;
+
+  late final List<String> _gradingSubjects = [];
+  late final List<Session> _sessions = [];
+
+  String get dateFrom => _dateFrom;
+
+  String get dateTo => _dateTo;
+
+  int get locationId => _locationId;
+
+  List<String> get gradingSubject => _gradingSubjects;
+  List<Session> get session => _sessions;
+
+  setDateFrom(String s) {
+    _dateFrom = s;
+  }
+
+  setDateTo(String s) {
+    _dateTo = s;
+  }
+
+  setLocationId(int i) {
+    _locationId = i;
+  }
+
+  addGradingSubject(String s) {
+    _gradingSubjects.add(s);
+  }
+
+  removeGradingSubject(String s) {
+    _gradingSubjects.remove(s);
+  }
+
+  addSession(Session s) {
+    session.add(s);
+  }
+
+  removeSession(Session s) {
+    _sessions.remove(s);
+  }
+}
+
+class Session {
+  late String _moderatorEmail = "";
+  late String _name = "";
+  late String _description = "";
+  late bool _isOnline = false;
+
+  Session();
+  Session.value(String mail, String name, String d, bool online) {
+    _moderatorEmail = mail;
+    _name = name;
+    _description = d;
+    _isOnline = online;
+  }
+
+  String get moderatorEmail => _moderatorEmail;
+  String get name => _name;
+  String get description => _description;
+  bool get isOnline => _isOnline;
+
+  setModeratorEmail(String s) {
+    _moderatorEmail = s;
+  }
+
+  setName(String s) {
+    _name = s;
+  }
+
+  setDescription(String s) {
+    _description = s;
+  }
+
+  setOnline(bool b) {
+    _isOnline = b;
   }
 }
