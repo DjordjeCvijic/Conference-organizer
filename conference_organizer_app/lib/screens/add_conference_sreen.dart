@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/providers/location_provider.dart';
+import 'package:conference_organizer_app/providers/person_provider.dart';
 import 'package:conference_organizer_app/widgets/my_divider.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
@@ -180,11 +181,9 @@ class AddConferenceScreen extends StatelessWidget {
                                   height: 286, child: GradingSubjectBox()),
                             ),
                             ElevatedButton(
-                                onPressed: () => log("izabrnao: " +
-                                    _conferenceProvider
-                                        .conferenceToSave.locationId
-                                        .toString()),
-                                child: const Text("save"))
+                                onPressed: () =>
+                                    _conferenceProvider.saveConference(),
+                                child: const Text("save")),
                           ],
                         ),
                       ),
@@ -198,7 +197,7 @@ class AddConferenceScreen extends StatelessWidget {
                       color: Colors.grey[800],
                       height: 600,
                       child: Column(
-                        children: [
+                        children: const [
                           MyDivider("Dodaj sesije"),
                           Padding(
                             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
@@ -383,7 +382,7 @@ class _SessionBoxState extends State<SessionBox> {
         Provider.of<ConferenceProvider>(context, listen: false);
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 10,
         ),
         Container(
@@ -433,42 +432,58 @@ class _SessionBoxState extends State<SessionBox> {
           shrinkWrap: true,
           itemCount: _conferenceProvider.conferenceToSave.session.length,
           itemBuilder: (context, index) {
-            return Row(
-              children: [
-                Text(_conferenceProvider.conferenceToSave.session
-                    .elementAt(index)
-                    .name),
-                IconButton(
-                  onPressed: () {
-                    Session s = _conferenceProvider.conferenceToSave.session
-                        .elementAt(index);
-                    final _formKey = GlobalKey<FormState>();
-                    showDialog(
-                        context: context,
-                        builder: (_) =>
-                            ChangeNotifierProvider<ConferenceProvider>.value(
-                              value: _conferenceProvider,
-                              child: AlertDialogForSession(
-                                formKey: _formKey,
-                                callBackFuncion: setStateCallBack,
-                                sessionToUpdate: s,
-                              ),
-                            ));
-                  },
-                  icon: const Icon(Icons.edit),
+            return Padding(
+              padding: const EdgeInsets.fromLTRB(10, 3, 10, 2),
+              child: Container(
+                color: Colors.blue[200],
+                child: Row(
+                  children: [
+                    Expanded(
+                      flex: 6,
+                      child: Text(_conferenceProvider.conferenceToSave.session
+                          .elementAt(index)
+                          .name),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: () {
+                          Session s = _conferenceProvider
+                              .conferenceToSave.session
+                              .elementAt(index);
+                          final _formKey = GlobalKey<FormState>();
+                          showDialog(
+                              context: context,
+                              builder: (_) => ChangeNotifierProvider<
+                                      ConferenceProvider>.value(
+                                    value: _conferenceProvider,
+                                    child: AlertDialogForSession(
+                                      formKey: _formKey,
+                                      callBackFuncion: setStateCallBack,
+                                      sessionToUpdate: s,
+                                    ),
+                                  ));
+                        },
+                        icon: const Icon(Icons.edit),
+                      ),
+                    ),
+                    Expanded(
+                      flex: 1,
+                      child: IconButton(
+                        onPressed: () {
+                          _conferenceProvider.conferenceToSave.removeSession(
+                              _conferenceProvider.conferenceToSave.session
+                                  .elementAt(index));
+                          setState(() {
+                            sessionNumber--;
+                          });
+                        },
+                        icon: const Icon(Icons.delete),
+                      ),
+                    )
+                  ],
                 ),
-                IconButton(
-                  onPressed: () {
-                    _conferenceProvider.conferenceToSave.removeSession(
-                        _conferenceProvider.conferenceToSave.session
-                            .elementAt(index));
-                    setState(() {
-                      sessionNumber--;
-                    });
-                  },
-                  icon: const Icon(Icons.delete),
-                )
-              ],
+              ),
             );
           },
         )),
@@ -549,43 +564,60 @@ class _GradingSubjectBoxState extends State<GradingSubjectBox> {
               itemCount:
                   _conferenceProvider.conferenceToSave.gradingSubject.length,
               itemBuilder: (context, index) {
-                return Row(
-                  children: [
-                    Text(_conferenceProvider.conferenceToSave.gradingSubject
-                        .elementAt(index)),
-                    IconButton(
-                      onPressed: () {
-                        String s = _conferenceProvider
-                            .conferenceToSave.gradingSubject
-                            .elementAt(index);
-                        final _formKey = GlobalKey<FormState>();
-                        showDialog(
-                            context: context,
-                            builder: (_) => ChangeNotifierProvider<
-                                    ConferenceProvider>.value(
-                                  value: _conferenceProvider,
-                                  child: AlertDialogForGradingSubjects(
-                                    formKey: _formKey,
-                                    callBackFuncion: setStateCallBack,
-                                    text: s,
-                                  ),
-                                ));
-                      },
-                      icon: const Icon(Icons.edit),
+                return Padding(
+                  padding: const EdgeInsets.fromLTRB(10, 3, 10, 2),
+                  child: Container(
+                    color: Colors.blue[300],
+                    child: Row(
+                      children: [
+                        Expanded(
+                          flex: 6,
+                          child: Text(
+                            _conferenceProvider.conferenceToSave.gradingSubject
+                                .elementAt(index),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            onPressed: () {
+                              String s = _conferenceProvider
+                                  .conferenceToSave.gradingSubject
+                                  .elementAt(index);
+                              final _formKey = GlobalKey<FormState>();
+                              showDialog(
+                                  context: context,
+                                  builder: (_) => ChangeNotifierProvider<
+                                          ConferenceProvider>.value(
+                                        value: _conferenceProvider,
+                                        child: AlertDialogForGradingSubjects(
+                                          formKey: _formKey,
+                                          callBackFuncion: setStateCallBack,
+                                          text: s,
+                                        ),
+                                      ));
+                            },
+                            icon: const Icon(Icons.edit),
+                          ),
+                        ),
+                        Expanded(
+                          flex: 1,
+                          child: IconButton(
+                            onPressed: () {
+                              _conferenceProvider.conferenceToSave
+                                  .removeGradingSubject(_conferenceProvider
+                                      .conferenceToSave.gradingSubject
+                                      .elementAt(index));
+                              setState(() {
+                                gradingSubjectNumber--;
+                              });
+                            },
+                            icon: const Icon(Icons.delete),
+                          ),
+                        )
+                      ],
                     ),
-                    IconButton(
-                      onPressed: () {
-                        _conferenceProvider.conferenceToSave
-                            .removeGradingSubject(_conferenceProvider
-                                .conferenceToSave.gradingSubject
-                                .elementAt(index));
-                        setState(() {
-                          gradingSubjectNumber--;
-                        });
-                      },
-                      icon: const Icon(Icons.delete),
-                    )
-                  ],
+                  ),
                 );
               },
             )),
@@ -596,7 +628,7 @@ class _GradingSubjectBoxState extends State<GradingSubjectBox> {
 
 class AlertDialogForGradingSubjects extends StatelessWidget {
   final GlobalKey<FormState> _formKey;
-  final callBackFuncion;
+  final dynamic callBackFuncion;
   final String text;
 
   const AlertDialogForGradingSubjects(
@@ -672,9 +704,9 @@ class AlertDialogForGradingSubjects extends StatelessWidget {
   }
 }
 
-class AlertDialogForSession extends StatelessWidget {
+class AlertDialogForSession extends StatefulWidget {
   final GlobalKey<FormState> _formKey;
-  final callBackFuncion;
+  final dynamic callBackFuncion;
   final Session sessionToUpdate;
   const AlertDialogForSession(
       {Key? key,
@@ -685,128 +717,186 @@ class AlertDialogForSession extends StatelessWidget {
         super(key: key);
 
   @override
+  State<AlertDialogForSession> createState() => _AlertDialogForSessionState();
+}
+
+class _AlertDialogForSessionState extends State<AlertDialogForSession> {
+  bool isChecked = false;
+  late TextEditingController nameController;
+  late TextEditingController descriptionController;
+  late TextEditingController moderatorEmailController;
+  @override
+  void initState() {
+    super.initState();
+    isChecked = widget.sessionToUpdate.isOnline;
+    nameController = TextEditingController(text: widget.sessionToUpdate.name);
+    descriptionController =
+        TextEditingController(text: widget.sessionToUpdate.description);
+    moderatorEmailController =
+        TextEditingController(text: widget.sessionToUpdate.moderatorEmail);
+  }
+
+  @override
   Widget build(BuildContext context) {
     final _conferenceProvider =
         Provider.of<ConferenceProvider>(context, listen: false);
-    var _nameController = TextEditingController(text: sessionToUpdate.name);
-    var _descriptionController =
-        TextEditingController(text: sessionToUpdate.description);
-    var _moderatorEmailController =
-        TextEditingController(text: sessionToUpdate.moderatorEmail);
-    return AlertDialog(
-      title: const Text("Unesite "),
-      content: SizedBox(
-        height: 350,
-        width: 450,
-        child: Form(
-          key: _formKey,
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text("Naslov", textAlign: TextAlign.left),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Polje ne smije biti prazno!';
-                  }
-                  return null;
-                },
-                minLines: 1,
-                maxLines: 2,
-                controller: _nameController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                ),
-              ),
-              Text("opsoi", textAlign: TextAlign.left),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Polje ne smije biti prazno!';
-                  }
-                  return null;
-                },
-                minLines: 4,
-                maxLines: 6,
-                controller: _descriptionController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                ),
-              ),
-              Text("moderator", textAlign: TextAlign.left),
-              TextFormField(
-                validator: (value) {
-                  if (value == null || value.isEmpty) {
-                    return 'Polje ne smije biti prazno!';
-                  }
-                  return null;
-                },
-                minLines: 1,
-                maxLines: 2,
-                controller: _moderatorEmailController,
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  filled: true,
-                  fillColor: Colors.grey.shade300,
-                  focusedBorder: const OutlineInputBorder(
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                  enabledBorder: const OutlineInputBorder(
-                    borderSide: BorderSide(color: Colors.white),
-                    borderRadius: BorderRadius.all(Radius.circular(11.0)),
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-      actions: [
-        TextButton(
-          onPressed: () {
-            Navigator.of(context).pop();
-          },
-          child: const Text('Odustani'),
-        ),
-        TextButton(
-            onPressed: () {
-              if (_formKey.currentState!.validate()) {
-                if (sessionToUpdate.name != "") {
-                  _conferenceProvider.conferenceToSave
-                      .removeSession(sessionToUpdate);
-                }
-                Session sessionToSave = Session.value(
-                    _moderatorEmailController.text,
-                    _nameController.text,
-                    _descriptionController.text,
-                    false);
 
-                _conferenceProvider.conferenceToSave.addSession(sessionToSave);
+    return ChangeNotifierProvider(
+        create: (context) => PersonProvider(),
+        builder: (context, child) => AlertDialog(
+              title: const Text("Unesite "),
+              content: SizedBox(
+                height: 400,
+                width: 450,
+                child: Form(
+                  key: widget._formKey,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const Text("Naslov", textAlign: TextAlign.left),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Polje ne smije biti prazno!';
+                          }
+                          return null;
+                        },
+                        minLines: 1,
+                        maxLines: 2,
+                        controller: nameController,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade300,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("opsoi", textAlign: TextAlign.left),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Polje ne smije biti prazno!';
+                          }
+                          return null;
+                        },
+                        minLines: 4,
+                        maxLines: 6,
+                        controller: descriptionController,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade300,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      const Text("moderator", textAlign: TextAlign.left),
+                      TextFormField(
+                        validator: (value) {
+                          if (value == null || value.isEmpty) {
+                            return 'Polje ne smije biti prazno!';
+                          }
+                          return null;
+                        },
+                        minLines: 1,
+                        maxLines: 2,
+                        controller: moderatorEmailController,
+                        cursorColor: Colors.black,
+                        decoration: InputDecoration(
+                          filled: true,
+                          fillColor: Colors.grey.shade300,
+                          focusedBorder: const OutlineInputBorder(
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                          enabledBorder: const OutlineInputBorder(
+                            borderSide: BorderSide(color: Colors.white),
+                            borderRadius:
+                                BorderRadius.all(Radius.circular(11.0)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(
+                        height: 15,
+                      ),
+                      Row(
+                        children: [
+                          const Text("Online"),
+                          Checkbox(
+                            checkColor: Colors.white,
+                            //fillColor: MaterialStateProperty.resolveWith(getColor),
+                            value: isChecked,
+                            onChanged: (bool? value) {
+                              setState(() {
+                                isChecked = value!;
+                              });
+                            },
+                          )
+                        ],
+                      )
+                    ],
+                  ),
+                ),
+              ),
+              actions: [
+                TextButton(
+                  onPressed: () {
+                    Navigator.of(context).pop();
+                  },
+                  child: const Text('Odustani'),
+                ),
+                TextButton(
+                    onPressed: () {
+                      if (widget._formKey.currentState!.validate()) {
+                        Provider.of<PersonProvider>(context, listen: false)
+                            .personExist(moderatorEmailController.text)
+                            .then((value) {
+                          if (value) {
+                            if (widget.sessionToUpdate.name != "") {
+                              _conferenceProvider.conferenceToSave
+                                  .removeSession(widget.sessionToUpdate);
+                            }
+                            Session sessionToSave = Session.value(
+                                moderatorEmailController.text,
+                                nameController.text,
+                                descriptionController.text,
+                                isChecked);
 
-                Navigator.of(context).pop();
-                callBackFuncion();
-              }
-            },
-            child: const Text('sacuvaj'))
-      ],
-    );
+                            _conferenceProvider.conferenceToSave
+                                .addSession(sessionToSave);
+
+                            Navigator.of(context).pop();
+                            widget.callBackFuncion();
+                          } else {
+                            moderatorEmailController.text =
+                                "PERSON IS NOT IN SYSTEM";
+                          }
+                        });
+                      }
+                    },
+                    child: const Text('sacuvaj'))
+              ],
+            ));
   }
 }

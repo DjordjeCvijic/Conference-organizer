@@ -9,6 +9,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Setter
 @Getter
@@ -20,6 +21,12 @@ public class ConferenceRequestDto {
     private String description;
     private String dateFrom;
     private String dateTo;
-    private Integer location;
-    private Integer creator;
+    private Integer locationId;
+    private Integer creatorId;
+
+
+    private List<String> gradingSubjectList;
+    private List<SessionRequestDto>sessionRequestDtoList;
+
+
 }

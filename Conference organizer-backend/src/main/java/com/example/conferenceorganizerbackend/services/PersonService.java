@@ -39,7 +39,7 @@ public class PersonService {
     }
 
     public Person login(LoginRequest loginRequest) throws NotFoundException, NoSuchAlgorithmException {
-if (!personRepository.existsPersonByEmail(loginRequest.getEmail()))
+        if (!personRepository.existsPersonByEmail(loginRequest.getEmail()))
             throw new NotFoundException("Email is incorrect");
         Person person = personRepository.findPersonByEmail(loginRequest.getEmail());
         MessageDigest md = MessageDigest.getInstance("MD5");
@@ -48,12 +48,21 @@ if (!personRepository.existsPersonByEmail(loginRequest.getEmail()))
         byte[] digest = md.digest();
         String myHash = DatatypeConverter
                 .printHexBinary(digest).toUpperCase();
-        if(person.getPassword().equals(myHash))
+        if (person.getPassword().equals(myHash))
             return person;
         else throw new NotFoundException("Password is incorrect");
     }
 
     public Person getById(Integer creatorId) throws NotFoundException {
-        return personRepository.findById(creatorId).orElseThrow(()-> new NotFoundException("Osoba sa id ne postoji"));
+        return personRepository.findById(creatorId).orElseThrow(() -> new NotFoundException("Osoba sa id ne postoji"));
+    }
+
+    public Boolean personExist(String email)  {
+        if (!personRepository.existsPersonByEmail(email))
+            return false;
+        return true;
+    }
+    public Person getPersonByEmail(String email){
+        return personRepository.findPersonByEmail(email);
     }
 }

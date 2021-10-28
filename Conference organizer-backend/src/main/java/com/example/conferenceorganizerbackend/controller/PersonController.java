@@ -33,4 +33,9 @@ public class PersonController {
 
     }
 
+    @PostMapping("/exist")
+    public Boolean personExist(@RequestBody String email){
+        return personService.personExist(email);
+    }
+
 }

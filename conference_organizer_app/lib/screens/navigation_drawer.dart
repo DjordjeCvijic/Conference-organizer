@@ -1,5 +1,6 @@
 import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/providers/location_provider.dart';
+import 'package:conference_organizer_app/providers/person_provider.dart';
 import 'package:conference_organizer_app/providers/shared_preferences_service.dart';
 import 'package:conference_organizer_app/screens/add_conference_sreen.dart';
 import 'package:conference_organizer_app/screens/all_conference_screen.dart';
@@ -29,6 +30,9 @@ class NavigationDrawerState extends State<NavigationDrawer> {
         ),
         ChangeNotifierProvider(
           create: (_) => LocationProvider(),
+        ),
+        ChangeNotifierProvider(
+          create: (_) => PersonProvider(),
         )
       ],
       builder: (context, child) => const AddConferenceScreen(),
