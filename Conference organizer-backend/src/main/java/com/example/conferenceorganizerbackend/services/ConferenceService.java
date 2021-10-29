@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
 import java.util.List;
 
@@ -65,8 +66,9 @@ public class ConferenceService {
         Conference result=new Conference();
         result.setName(conferenceRequestDto.getName());
         result.setDescription(conferenceRequestDto.getDescription());
-        result.setDateFrom(LocalDateTime.parse(conferenceRequestDto.getDateFrom()));
-        result.setDateTo(LocalDateTime.parse(conferenceRequestDto.getDateTo()));
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
+        result.setDateFrom(LocalDateTime.parse(conferenceRequestDto.getDateFrom().substring(0,16),formatter));
+        result.setDateTo(LocalDateTime.parse(conferenceRequestDto.getDateTo().substring(0,16),formatter));
         result.setLocation(locationService.getById(conferenceRequestDto.getLocationId()));
         result.setCreator(personService.getById(conferenceRequestDto.getCreatorId()));
         return result;

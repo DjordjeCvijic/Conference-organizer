@@ -101,7 +101,7 @@ class RegistrationScreen extends StatelessWidget {
                                       title: const Text('Pažnja!'),
                                       content: Text(value
                                           ? "Uspijesno ste se registrovali !"
-                                          : 'Došlo je do greške prilikom registracije, provjerite podatke i pokušajte ponovo.'),
+                                          : 'Došlo je do greške prilikom registracije. Email korisnika vec ppostoji.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {

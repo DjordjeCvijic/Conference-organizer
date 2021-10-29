@@ -181,8 +181,62 @@ class AddConferenceScreen extends StatelessWidget {
                                   height: 286, child: GradingSubjectBox()),
                             ),
                             ElevatedButton(
-                                onPressed: () =>
-                                    _conferenceProvider.saveConference(),
+                                onPressed: () {
+                                  _conferenceProvider.conferenceToSave
+                                      .setName(_nameController.text);
+                                  _conferenceProvider.conferenceToSave
+                                      .setDescription(
+                                          _descriptionController.text);
+                                  _conferenceProvider
+                                      .saveConference()
+                                      .then((value) {
+                                    if (value) {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Obavjestenje'),
+                                          content: const Text(
+                                              'Konferencija sacuvana'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  context, 'Cancel'),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    } else {
+                                      showDialog<String>(
+                                        context: context,
+                                        builder: (BuildContext context) =>
+                                            AlertDialog(
+                                          title: const Text('Obavjestenje'),
+                                          content:
+                                              const Text('Doslo je do greske'),
+                                          actions: <Widget>[
+                                            TextButton(
+                                              onPressed: () => Navigator.pop(
+                                                  context, 'Cancel'),
+                                              child: const Text('Cancel'),
+                                            ),
+                                            TextButton(
+                                              onPressed: () =>
+                                                  Navigator.pop(context, 'OK'),
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  });
+                                },
                                 child: const Text("save")),
                           ],
                         ),

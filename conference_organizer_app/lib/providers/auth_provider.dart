@@ -15,6 +15,11 @@ class AuthProvider extends ChangeNotifier {
       "Accept-Encoding": "gzip, deflate, br"
     };
 
+    print(jsonEncode({
+      "email": email,
+      "password": password,
+    }));
+
     var res = await http.post(
       Uri.parse(apiUrl),
       headers: headers,

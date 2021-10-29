@@ -43,17 +43,16 @@ class ConferenceProvider extends ChangeNotifier {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     final params = {
-      "creatorId": prefs.getString("personId"),
+      "creatorId": int.parse(prefs.getString("personId")!),
       "dateFrom": conferenceToSave.dateFrom,
       "dateTo": conferenceToSave.dateTo,
       "description": conferenceToSave.description,
-      "locationId": conferenceToSave.locationId.toString(),
-      "name": "a", //conferenceToSave.name,
-      "gradingSubjectList": jsonEncode(conferenceToSave.gradingSubject),
-      "sessionRequestDtoList": jsonEncode(conferenceToSave.session)
+      "locationId": conferenceToSave.locationId,
+      "name": conferenceToSave.name,
+      "gradingSubjectList": conferenceToSave.gradingSubject,
+      "sessionRequestDtoList": conferenceToSave.session
     };
-    log(params.toString());
-    print(params.toString());
+
     var res = await http.post(
       Uri.parse(apiUrl),
       headers: headers,
@@ -130,14 +129,6 @@ class ConferenceToSave {
   removeSession(Session s) {
     _sessions.remove(s);
   }
-
-  List<Map<String, String>> getData() {
-    List<Map<String, String>> res = [{}];
-    for (int i = 0; i < session.length; i++) {
-      res.add(session.elementAt(i).getData());
-    }
-    return res;
-  }
 }
 
 class Session {
@@ -183,15 +174,4 @@ class Session {
         "name": name,
         "online": isOnline.toString()
       };
-
-  Map<String, String> getData() {
-    Map<String, String> res = {
-      "description": _description,
-      "moderatorEmail": _moderatorEmail,
-      "name": name,
-      "online": isOnline.toString()
-    };
-
-    return res;
-  }
 }
