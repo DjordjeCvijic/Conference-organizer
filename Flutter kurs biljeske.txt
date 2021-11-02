@@ -1,0 +1,189 @@
+Flutter Kurs:
+
+
+flutter ectenzija u VS
+
+komanda flutter clean ponekad kao rebuild
+
+column  main axes , cross aces
+scaffild
+row
+container
+
+
+Padding prvi u body za bolje pozicioniranje
+flexible kao wrap contetn
+a Expanded kao match parent
+
+
+Stilovi:
+
+
+precica st kad hocu kreirati widget u novom fajlu
+
+za back samo skinemo sa stega
+
+koristenje provajdera:
+	okruzivanje:
+	1.ChangeNotifierProvider(
+      create: (context) => HomeProvider(),
+      child: const HomeScreen(),
+	  
+	2.ChangeNotifierProvider.value(
+      value: ContentProvider(),
+      builder: (context, child) => Column(
+	  
+	  
+	  
+	koristenje:
+	1:Provider.of<ContentProvider>(context, listen: false)			//rezultat je u value i kad se dobije rezultat onda se ucita ponovo,  dobro kod dohvatanja, poziva se async
+                              .getContentDetails(
+                                  (_listaFilmova![index])["contentId"])
+                              .then((value) {
+                            Navigator.of(context).pushNamed(
+                                globals.content_description_screen_route,
+                                arguments: {
+                                  "data": value,
+                                  "contentId": _listaFilmova![1]["contentId"]
+                                });
+	
+	2:ElevatedButton(										//doro kod setere,nema ponovnog ucitavanja
+                            onPressed: () {
+                              final contentProvider =
+                                  Provider.of<ContentProvider>(context,
+                                      listen: false);
+                              contentProvider.addComment(
+                                  8, contentId, textEditingController.text);
+                            },
+                            child: Text("komentar"))
+							
+	3:Consumer<LoginPovider>(							loginProvide je kao funckija ,  isto se radi async i ucitava se naknadno  dobro jer se funcija kasnije bilo gdje moze koristii
+                        builder: (context, loginProvide, child) =>
+                            ElevatedButton(
+                                style: ButtonStyle(
+                                    backgroundColor:
+                                        MaterialStateProperty.all(Colors.blue),
+                                    minimumSize: MaterialStateProperty.all(
+                                        const Size(double.infinity, 50)),
+                                    shape: MaterialStateProperty.all<
+                                            RoundedRectangleBorder>(
+                                        RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(28.0),
+                                    ))),
+                                onPressed: () async {
+                                  loginProvide
+                                      .login(_emailController.text,
+                                          _passController.text)
+                                      .then((value) {
+                                    if (value) {
+                                      //Navigator.of(context).pop();
+                                      Navigator.pushReplacementNamed(
+                                          context, globals.main_screen_route);
+                                    } else {
+                                      showDialog(
+                                        context: context,
+                                        builder: (_) => AlertDialog(
+                                          title: const Text('Pažnja!'),
+                                          content: const Text(
+                                              'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
+                                          actions: [
+                                            TextButton(
+                                              onPressed: () {
+                                                Navigator.of(context).pop();
+                                              },
+                                              child: const Text('OK'),
+                                            ),
+                                          ],
+                                        ),
+                                      );
+                                    }
+                                  });
+                                },
+                                child: Text("Login",
+                                    style: const TextStyle(
+                                      fontSize: 20.0,
+                                    )))),
+									
+									
+									
+	4:Expanded(								kod dogvatanja tacno definisemo kakav ce biti odgovor
+                  child: FutureBuilder(
+                      future: Provider.of<HomeProvider>(context)
+                          .getContentByReleaseDate(
+                              1), //ovdje moze bilo sta da se pozove
+                      builder: (context,
+                              AsyncSnapshot<List<Map<String, dynamic>>?>
+                                  snapshot) =>
+                          snapshot.connectionState == ConnectionState.waiting
+                              ? const CircularProgressIndicator()
+                              : MovieList("Za tebe", snapshot.data)))
+							  
+							  
+							  FutureBuilder(  		nije poziv provajdera ali ja async
+          future: Token.	(),
+          builder: (ctx, snapshot) =>
+              snapshot.connectionState == ConnectionState.waiting
+                  ? const Center(
+                      child: CircularProgressIndicator(),
+                    )
+                  : snapshot.data != null
+                      ? const TabsScreen()
+                      : const LoginScreen(),
+        ),
+		
+		
+	 5:    final contentProvider = Provider.of<ContentProvider>(context); kao obicnu varijablu i sada mogu pozivati metode tog provajdera
+		to radi kada na jednom mjestu treba neki rezultat a na drugom mjesto koristi u future builderu da nesto isrcta
+	 
+		FutureBuilder( //ne vrsi ponovno iscrtavanje tj ne slusa provajder . on je obicajena komponenta
+		
+		 future: contentProvider.getAllGenres(),
+      builder: (context, AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) =>
+          snapshot.connectionState == ConnectionState.waiting
+              ? const Center(
+                  child: CircularProgressIndicator(),
+                )
+              : snapshot.data != null
+                  ? SizedBox( ...........
+ 
+ 
+ 
+ sta cana radi : u provajderu definise metod e npr za dohvtanje filmove u kojoj pozove api i logalnu listu popuni a. kada treba prvo pozove futurebilder sa tim a onda 
+ koristi tu listu iz provajdera
+ 
+ 
+ 
+ 
+ 
+ MaterialPageRoute(				
+                builder: (context) => ChangeNotifierProvider.value(		svako dijete ima svoj kontekst zbog value
+                  value: SingleMovieProvider.value(	
+                    value,
+                    moviesData!['contentId'],
+                  ),
+                  builder: (ctx, child) => DetailsScreen(),
+                ),
+				
+				
+				Consumer<SingleMovieProvider>(//korisitmo kada samo dio hocemo renderovati
+                builder: (context, provider, child) => Column(  samo ce se ovaj build ponovo pokrenuti
+				
+				
+				
+				
+
+ Bracket Pair    oboji linije
+ ctr +/  da otvori dva code editora
+ 
+ u podesavanji guides  nadjem i enable experimentana podesavanja tako da dobijem tree za widgets koja su djeca
+ 
+ Awesome Flutter Snippets za autocomplete najcescih elemenata
+ 
+ "BUG",
+ "HACK",
+"FIXME",
+ "TODO"
+ samo kucam // TODO: i sta hocu
+ 
+ 
+ flutter run --release -d chrome kad bude sve gotovo
