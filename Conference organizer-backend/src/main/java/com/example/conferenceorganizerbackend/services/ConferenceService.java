@@ -35,40 +35,35 @@ public class ConferenceService {
     }
 
     public List<ConferenceInfoDto> getAll() {
-        List<ConferenceInfoDto> res=new LinkedList<>();
-        res.add(new ConferenceInfoDto(1,"konferencija 1","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(2,"konferencija 2","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(3,"konferencija 3","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(4,"konferencija 4","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(5,"konferencija 5","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(6,"konferencija 7","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(7,"konferencija 7","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
-        res.add(new ConferenceInfoDto(8,"konferencija 8","20.04.2020","25.04.2020","lokavcija 1","kreator@mail"));
+        List<ConferenceInfoDto> res = new LinkedList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
 
+        List<Conference> conferenceList = conferenceRepository.findAll();
+        conferenceList.forEach(e -> res.add(new ConferenceInfoDto(e.getConference_id(), e.getName(), e.getDateFrom().format(formatter), e.getDateTo().format(formatter), e.getLocation().getName(), e.getCreator().getEmail())));
         return res;
     }
 
     public Conference save(ConferenceRequestDto conferenceRequestDto) throws NotFoundException {
-        Conference savedConference=conferenceRepository.save(buildConferenceFromDto(conferenceRequestDto));
+        Conference savedConference = conferenceRepository.save(buildConferenceFromDto(conferenceRequestDto));
         //treba sacuvati grading subject
-        conferenceRequestDto.getGradingSubjectList().forEach(e->gradingSubjectService.save(
-                new GradingSubject(0,e,savedConference)));
+        conferenceRequestDto.getGradingSubjectList().forEach(e -> gradingSubjectService.save(
+                new GradingSubject(0, e, savedConference)));
 
 
         //treba sacuvati session
         conferenceRequestDto.getSessionRequestDtoList().forEach(
-                element->sessionService.saveSession(new Session(0,element.getName(),element.getDescription(),element.isOnline(),savedConference,personService.getPersonByEmail(element.getModeratorEmail()))));
+                element -> sessionService.saveSession(new Session(0, element.getName(), element.getDescription(), element.isOnline(), savedConference, personService.getPersonByEmail(element.getModeratorEmail()))));
 
         return savedConference;
     }
 
     private Conference buildConferenceFromDto(ConferenceRequestDto conferenceRequestDto) throws NotFoundException {
-        Conference result=new Conference();
+        Conference result = new Conference();
         result.setName(conferenceRequestDto.getName());
         result.setDescription(conferenceRequestDto.getDescription());
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm");
-        result.setDateFrom(LocalDateTime.parse(conferenceRequestDto.getDateFrom().substring(0,16),formatter));
-        result.setDateTo(LocalDateTime.parse(conferenceRequestDto.getDateTo().substring(0,16),formatter));
+        result.setDateFrom(LocalDateTime.parse(conferenceRequestDto.getDateFrom().substring(0, 16), formatter));
+        result.setDateTo(LocalDateTime.parse(conferenceRequestDto.getDateTo().substring(0, 16), formatter));
         result.setLocation(locationService.getById(conferenceRequestDto.getLocationId()));
         result.setCreator(personService.getById(conferenceRequestDto.getCreatorId()));
         return result;

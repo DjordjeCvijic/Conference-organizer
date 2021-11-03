@@ -1,20 +1,23 @@
 import 'package:conference_organizer_app/providers/conference_provider.dart';
-import 'package:conference_organizer_app/widgets/conference_card.dart';
+import 'package:conference_organizer_app/providers/supervising_provider.dart';
+import 'package:conference_organizer_app/widgets/session_event_card.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-class AllConferenceScreen extends StatefulWidget {
-  const AllConferenceScreen({Key? key}) : super(key: key);
+import 'all_conference_screen.dart';
+
+class SupervisingScreen extends StatefulWidget {
+  const SupervisingScreen({Key? key}) : super(key: key);
 
   @override
-  State<AllConferenceScreen> createState() => _AllConferenceScreenState();
+  _SupervisingScreenState createState() => _SupervisingScreenState();
 }
 
-class _AllConferenceScreenState extends State<AllConferenceScreen> {
+class _SupervisingScreenState extends State<SupervisingScreen> {
   var chosenTab = 0;
   @override
   Widget build(BuildContext context) {
-    final conferenceProvider = Provider.of<ConferenceProvider>(context);
+    final supervisingProvider = Provider.of<SupervisingProvider>(context);
     return Column(
       children: [
         SizedBox(
@@ -28,7 +31,7 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
             SizedBox(
               width: 300,
               child: CustomTabElevatedButton(
-                tabTitle: "All conferences",
+                tabTitle: "Sessions",
                 active: chosenTab == 0,
                 onTap: () {
                   if (chosenTab != 0) {
@@ -44,7 +47,7 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
             SizedBox(
               width: 300,
               child: CustomTabElevatedButton(
-                tabTitle: "My conferences",
+                tabTitle: "Events",
                 active: chosenTab == 1,
                 onTap: () {
                   if (chosenTab != 1) {
@@ -67,7 +70,7 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
         //   style: Theme.of(context).textTheme.headline3,
         // ),
         FutureBuilder(
-            future: conferenceProvider.getAllConferences(chosenTab),
+            future: supervisingProvider.getSessionsAndEvents(chosenTab),
             builder: (context,
                     AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) =>
                 snapshot.connectionState == ConnectionState.waiting
@@ -85,8 +88,8 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
                               children:
                                   List.generate(snapshot.data!.length, (index) {
                                 return Container(
-                                    child:
-                                        ConferenceCard(snapshot.data![index]));
+                                    child: SessionEventCard(
+                                        snapshot.data![index]));
                               }),
                             ),
                           )
@@ -97,40 +100,6 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
                             ),
                           )),
       ],
-    );
-  }
-}
-
-class CustomTabElevatedButton extends StatelessWidget {
-  final bool active;
-  final String tabTitle;
-  final Function? onTap;
-
-  const CustomTabElevatedButton({
-    Key? key,
-    this.active = false,
-    this.tabTitle = "",
-    @required this.onTap,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return ElevatedButton(
-      onPressed: () => onTap!(),
-      child: Container(
-        margin: const EdgeInsets.symmetric(horizontal: 30.0),
-        child: Text(
-          tabTitle,
-          style: TextStyle(
-              color: !active ? Colors.grey : Colors.white, fontSize: 28),
-        ),
-      ),
-      style: ButtonStyle(
-        elevation: MaterialStateProperty.all(0),
-        backgroundColor: MaterialStateProperty.all(
-          Colors.transparent,
-        ),
-      ),
     );
   }
 }

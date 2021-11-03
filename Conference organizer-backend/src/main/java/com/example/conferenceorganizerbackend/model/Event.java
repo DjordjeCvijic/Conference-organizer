@@ -18,7 +18,7 @@ public class Event {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int eventId;
+    private Integer eventId;
 
     @Column(name="name",nullable = false)
     private String name;
@@ -45,7 +45,7 @@ public class Event {
 
     @ManyToOne
     @JoinColumn(name = "moderator_id", nullable = false)
-    private Person Moderator;
+    private Person moderator;
 
     @ManyToOne
     @JoinColumn(name = "place_id",nullable = false)
@@ -60,5 +60,5 @@ public class Event {
     private Session session;
 
 
-    //gale strani kljucevi
+
 }

@@ -1,11 +1,10 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 
-class ConferenceCard extends StatelessWidget {
+class SessionEventCard extends StatelessWidget {
   final Map<String, dynamic>? data;
-  const ConferenceCard(this.data, {Key? key}) : super(key: key);
+  const SessionEventCard(this.data, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -39,27 +38,10 @@ class ConferenceCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text("  mjest ${data!["location"]}",
-                    style: Theme.of(context).textTheme.bodyText1),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text("  vrijeme od ${data!["dateFrom"]}  ",
-                    style: Theme.of(context).textTheme.bodyText1),
-                const SizedBox(
-                  height: 10,
-                ),
-                Text("  vrijeme do ${data!["dateTo"]}",
-                    style: Theme.of(context).textTheme.bodyText1),
-                const SizedBox(
-                  height: 20,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.end,
-                  children: [
-                    Text("kreator ${data!["creatorEmail"]}  ",
-                        style: Theme.of(context).textTheme.bodyText1),
-                  ],
+                Padding(
+                  padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
+                  child: Text("U sklopu ${data!["partOfName"]}",
+                      style: Theme.of(context).textTheme.bodyText1),
                 ),
               ],
             ),

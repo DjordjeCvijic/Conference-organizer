@@ -1,9 +1,13 @@
+import 'dart:developer';
+
 import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/providers/location_provider.dart';
 import 'package:conference_organizer_app/providers/person_provider.dart';
 import 'package:conference_organizer_app/providers/shared_preferences_service.dart';
+import 'package:conference_organizer_app/providers/supervising_provider.dart';
 import 'package:conference_organizer_app/screens/add_conference_sreen.dart';
 import 'package:conference_organizer_app/screens/all_conference_screen.dart';
+import 'package:conference_organizer_app/screens/supervising_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
@@ -36,7 +40,11 @@ class NavigationDrawerState extends State<NavigationDrawer> {
         )
       ],
       builder: (context, child) => const AddConferenceScreen(),
-    )
+    ),
+    2: ChangeNotifierProvider(
+      create: (context) => SupervisingProvider(),
+      child: const SupervisingScreen(),
+    ),
     // 0: ChangeNotifierProvider(
     //   create: (context) => HomeProvider(),
     //   child: const HomeScreen(),
@@ -55,9 +63,17 @@ class NavigationDrawerState extends State<NavigationDrawer> {
   final drawerItems = [
     DrawerItem("All conferences", Icons.menu_book_outlined),
     DrawerItem("Add conferences", Icons.add_circle_outlined),
+    DrawerItem("Supervision", Icons.edit_outlined),
+    DrawerItem("Log out", Icons.logout_outlined)
   ];
 
   _getDrawerItemScreen() {
+    if (_selectedIndex == 3) {
+      Navigator.pop(context);
+      return null;
+      // return listOfScreens.entries.elementAt(0).value;
+    }
+
     return listOfScreens.entries.elementAt(_selectedIndex).value;
   }
 

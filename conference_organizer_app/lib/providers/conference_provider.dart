@@ -10,7 +10,7 @@ import '../const.dart';
 class ConferenceProvider extends ChangeNotifier {
   ConferenceToSave conferenceToSave = ConferenceToSave();
 
-  Future<List<Map<String, dynamic>>?> getAllConferences() async {
+  Future<List<Map<String, dynamic>>?> getAllConferences(int type) async {
     var apiUrl = Constants.baseUrl;
 
     var headers = {
@@ -29,6 +29,17 @@ class ConferenceProvider extends ChangeNotifier {
     var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
+
+    if (type != 0) {
+      SharedPreferences prefs = await SharedPreferences.getInstance();
+      String? logedEmail = prefs.getString("email");
+      for (var i = 0; i < resList.length; i++) {
+        if (resList[i]['creatorEmail'] != logedEmail) {
+          resList.removeAt(i);
+          i--;
+        }
+      }
+    }
 
     return resList;
   }

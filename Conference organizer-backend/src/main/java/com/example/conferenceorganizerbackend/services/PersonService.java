@@ -2,7 +2,10 @@ package com.example.conferenceorganizerbackend.services;
 
 import com.example.conferenceorganizerbackend.ExistingEmailException;
 import com.example.conferenceorganizerbackend.dto.LoginRequest;
+import com.example.conferenceorganizerbackend.dto.SessionEventInfoDto;
+import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.Person;
+import com.example.conferenceorganizerbackend.model.Session;
 import com.example.conferenceorganizerbackend.repository.PersonRepository;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +18,8 @@ import org.springframework.stereotype.Service;
 import javax.xml.bind.DatatypeConverter;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.LinkedList;
+import java.util.List;
 
 
 @Service
@@ -24,6 +29,11 @@ public class PersonService {
     private PersonRepository personRepository;
     @Autowired
     PasswordEncoder passwordEncoder;
+
+    @Autowired
+    private SessionService sessionService;
+    @Autowired
+    private EventService eventService;
 
     public Person registration(Person personToRegistration) throws ExistingEmailException, NoSuchAlgorithmException {
         if (personRepository.existsPersonByEmail(personToRegistration.getEmail()))
@@ -64,5 +74,16 @@ public class PersonService {
     }
     public Person getPersonByEmail(String email){
         return personRepository.findPersonByEmail(email);
+    }
+
+    public List<SessionEventInfoDto> getMySessionEndEventForSupervision(String email) {
+        System.out.println(email);
+        List<SessionEventInfoDto> result=new LinkedList<>();
+        List<Session> sessionList=sessionService.getMySessionsForSupervision(email);
+        List<Event>eventList=eventService.getMyEventsForSupervision(email);
+
+        sessionList.forEach(e->result.add(new SessionEventInfoDto(e.getSession_id(),"session",e.getConference().getName(),e.getConference().getConference_id(),e.getName())));
+        eventList.forEach(e->result.add(new SessionEventInfoDto(e.getEventId(),"event",e.getSession().getName(),e.getSession().getSession_id(),e.getName())));
+        return result;
     }
 }

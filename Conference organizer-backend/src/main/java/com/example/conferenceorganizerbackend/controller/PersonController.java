@@ -2,6 +2,7 @@ package com.example.conferenceorganizerbackend.controller;
 
 import com.example.conferenceorganizerbackend.ExistingEmailException;
 import com.example.conferenceorganizerbackend.dto.LoginRequest;
+import com.example.conferenceorganizerbackend.dto.SessionEventInfoDto;
 import com.example.conferenceorganizerbackend.model.Person;
 import com.example.conferenceorganizerbackend.services.PersonService;
 import javassist.NotFoundException;
@@ -10,6 +11,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
 
 
 @RestController
@@ -27,15 +29,20 @@ public class PersonController {
 
 
     @PostMapping("/login")
-//    @CrossOrigin
+
     public Person login(@RequestBody LoginRequest loginRequest) throws NotFoundException, NoSuchAlgorithmException {
         return personService.login(loginRequest);
 
     }
 
     @PostMapping("/exist")
-    public Boolean personExist(@RequestBody String email){
+    public Boolean personExist(@RequestBody String email) {
         return personService.personExist(email);
+    }
+
+    @PostMapping("/get-sessions-events-for-supervision")
+    public List<SessionEventInfoDto> getSessionAndEventForSupervision(@RequestBody String email){
+        return personService.getMySessionEndEventForSupervision(email);
     }
 
 }
