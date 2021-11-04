@@ -1,5 +1,6 @@
 import 'dart:developer';
 
+import "../globals.dart" as globals;
 import 'package:flutter/material.dart';
 
 class SessionEventCard extends StatelessWidget {
@@ -47,7 +48,13 @@ class SessionEventCard extends StatelessWidget {
             ),
           )),
       onTap: () {
-        log("stisno");
+        if (data!["type"] == "session") {
+          Navigator.pushNamed(context, globals.sessionEditingScreenRout);
+        } else {
+          log("ovo ce se izvrsiti kad ase klikne na editovanje veneta " +
+              data!["type"]);
+        }
+        log("ovdje se radi " + data!["type"]);
       },
     );
   }

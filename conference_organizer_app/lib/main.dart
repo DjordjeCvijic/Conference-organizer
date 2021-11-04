@@ -5,6 +5,7 @@ import 'package:conference_organizer_app/screens/registration_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import "./globals.dart" as globals;
+import 'screens/session_editing_screen.dart';
 
 void main() {
   // WidgetsFlutterBinding.ensureInitialized();
@@ -45,7 +46,8 @@ class MyApp extends StatelessWidget {
       ),
       routes: {
         globals.registrationScreenRoute: (ctx) => const RegistrationScreen(),
-        globals.navigatorDrawerRoute: (ctx) => const NavigationDrawer()
+        globals.navigatorDrawerRoute: (ctx) => const NavigationDrawer(),
+        globals.sessionEditingScreenRout: (ctx) => const SessionEditingScreen()
       },
     );
   }
