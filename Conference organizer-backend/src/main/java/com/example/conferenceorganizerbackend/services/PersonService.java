@@ -82,8 +82,8 @@ public class PersonService {
         List<Session> sessionList=sessionService.getMySessionsForSupervision(email);
         List<Event>eventList=eventService.getMyEventsForSupervision(email);
 
-        sessionList.forEach(e->result.add(new SessionEventInfoDto(e.getSession_id(),"session",e.getConference().getName(),e.getConference().getConference_id(),e.getName())));
-        eventList.forEach(e->result.add(new SessionEventInfoDto(e.getEventId(),"event",e.getSession().getName(),e.getSession().getSession_id(),e.getName())));
+        sessionList.forEach(e->result.add(new SessionEventInfoDto(e.getSession_id(),"session",e.getConference().getName(),e.getConference().getConference_id(),e.getName(),e.getDescription())));
+        eventList.forEach(e->result.add(new SessionEventInfoDto(e.getEventId(),"event",e.getSession().getName(),e.getSession().getSession_id(),e.getName(),e.getDescription())));
         return result;
     }
 }

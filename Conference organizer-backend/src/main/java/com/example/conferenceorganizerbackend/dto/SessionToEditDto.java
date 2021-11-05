@@ -18,6 +18,7 @@ public class SessionToEditDto {
     private Integer sessionId;
     private String name;
     private String description;
+    private Integer locationId;
     private List<EventDto> eventList=new LinkedList<>();
 
 

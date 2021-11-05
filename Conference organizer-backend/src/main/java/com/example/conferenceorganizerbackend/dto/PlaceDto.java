@@ -1,21 +1,24 @@
 package com.example.conferenceorganizerbackend.dto;
 
+import com.example.conferenceorganizerbackend.model.Location;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-@Setter
+import javax.persistence.*;
 @Getter
+@Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class SessionEventInfoDto {
 
-    private Integer id;
-    private String type;
-    private String partOfName;
-    private Integer partOfId;
+public class PlaceDto {
+
+
+    private Integer placeId;
     private String name;
-    private String description;
+    private Integer locationId;
+
+
 
 }

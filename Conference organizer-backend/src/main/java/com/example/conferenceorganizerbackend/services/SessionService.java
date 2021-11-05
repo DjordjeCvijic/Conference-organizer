@@ -32,6 +32,7 @@ public class SessionService {
         result.setSessionId(session.getSession_id());
         result.setName(session.getName());
         result.setDescription(session.getDescription());
+        result.setLocationId(session.getConference().getLocation().getLocationId());
         //ovdje treba povuci sve events i dodati
 
         return result;

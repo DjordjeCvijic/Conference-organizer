@@ -26,11 +26,14 @@ public class Event {
     @Column(name = "description",nullable = false)
     private String description;
 
-    @Column(name = "date_from",nullable = false)
-    private LocalDateTime dateFrom;
+    @Column(name = "date",nullable = false)
+    private LocalDateTime date;
 
-    @Column(name = "date_to",nullable = false)
-    private LocalDateTime dateTo;
+    @Column(name = "time_from",nullable = false)
+    private LocalDateTime timeFrom;
+
+    @Column(name = "time_to",nullable = false)
+    private LocalDateTime timeTo;
 
 
     @Column(name = "access_link")

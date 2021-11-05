@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -15,7 +16,7 @@ class AuthProvider extends ChangeNotifier {
       "Accept-Encoding": "gzip, deflate, br"
     };
 
-    print(jsonEncode({
+    log(jsonEncode({
       "email": email,
       "password": password,
     }));

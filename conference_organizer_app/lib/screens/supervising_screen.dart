@@ -1,4 +1,3 @@
-import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/providers/supervising_provider.dart';
 import 'package:conference_organizer_app/widgets/session_event_card.dart';
 import 'package:flutter/material.dart';
@@ -20,12 +19,12 @@ class _SupervisingScreenState extends State<SupervisingScreen> {
     final supervisingProvider = Provider.of<SupervisingProvider>(context);
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             SizedBox(

@@ -17,12 +17,12 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
     final conferenceProvider = Provider.of<ConferenceProvider>(context);
     return Column(
       children: [
-        SizedBox(
+        const SizedBox(
           height: 8,
         ),
         Row(
           children: [
-            SizedBox(
+            const SizedBox(
               width: 8,
             ),
             SizedBox(
