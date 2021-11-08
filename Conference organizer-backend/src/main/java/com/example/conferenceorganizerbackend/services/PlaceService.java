@@ -25,4 +25,8 @@ public class PlaceService {
 
         return resultList;
     }
+
+    public Place getById(Integer id) {
+        return placeRepository.findById(id).get();
+    }
 }

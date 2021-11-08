@@ -37,10 +37,10 @@ public class Event {
 
 
     @Column(name = "access_link")
-    private LocalDateTime accessLink;
+    private String accessLink;
 
     @Column(name = "access_password")
-    private LocalDateTime accessPassword;
+    private String accessPassword;
 
     @ManyToOne
     @JoinColumn(name = "lecturer_id")

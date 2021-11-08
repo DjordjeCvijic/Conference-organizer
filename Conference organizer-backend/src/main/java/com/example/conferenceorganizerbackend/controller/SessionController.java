@@ -2,6 +2,7 @@ package com.example.conferenceorganizerbackend.controller;
 
 import com.example.conferenceorganizerbackend.dto.SessionEventInfoDto;
 import com.example.conferenceorganizerbackend.dto.SessionToEditDto;
+import com.example.conferenceorganizerbackend.model.Session;
 import com.example.conferenceorganizerbackend.services.SessionService;
 import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,11 @@ public class SessionController {
     @PostMapping("/get-session-to-edit")
     public SessionToEditDto getSessionToEdit(@RequestBody int sessionId) throws NotFoundException {
         return sessionService.getSessionToEdit(sessionId);
+    }
+
+    @PostMapping("/add")
+    public Session addSession(SessionToEditDto sessionToEditDto){
+        return sessionService.saveEditedSession(sessionToEditDto);
+
     }
 }

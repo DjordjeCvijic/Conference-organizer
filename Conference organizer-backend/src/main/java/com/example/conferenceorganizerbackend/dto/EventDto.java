@@ -21,11 +21,11 @@ public class EventDto {
     private Integer eventId;
     private String name;
     private String description;
-    private String dateFrom;
-    private String dateTo;
+    private String date;
+    private String timeFrom;
+    private String timeTo;
     private String moderatorEmail;
-    private String place;
     private Integer placeId;
-    private String eventType;
+    private Integer eventTypeId;
     private Integer sessionId;
 }

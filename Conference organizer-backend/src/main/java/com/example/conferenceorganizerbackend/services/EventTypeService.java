@@ -16,4 +16,8 @@ public class EventTypeService {
     public List<EventType> getAll() {
         return eventTypeRepository.findAll();
     }
+
+    public EventType getById(Integer id){
+        return eventTypeRepository.findById(id).get();
+    }
 }

@@ -187,10 +187,28 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                                           : DropDownButtonForPlace(
                                               widget.eventToUpdate)))
                         ]),
-                        SizedBox(
+                        const SizedBox(
                           height: 10,
                         ),
                         DatePickerWidget(widget.eventToUpdate, "datum pocetka"),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        Row(
+                          children: [
+                            Expanded(
+                                flex: 1,
+                                child: TimePickerWidget(
+                                    widget.eventToUpdate, "pocetak", 1)),
+                            const SizedBox(
+                              width: 12,
+                            ),
+                            Expanded(
+                                flex: 1,
+                                child: TimePickerWidget(
+                                    widget.eventToUpdate, "kraj ", 2))
+                          ],
+                        ),
                       ],
                     ),
                   ),
@@ -255,7 +273,11 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                                 " datum: " +
                                 widget.eventToUpdate.date +
                                 " mjesto " +
-                                widget.eventToUpdate.placeId.toString());
+                                widget.eventToUpdate.placeId.toString() +
+                                " vrijeme od " +
+                                widget.eventToUpdate.timeFrom.toString() +
+                                " vrijeme DO " +
+                                widget.eventToUpdate.timeTo.toString());
 
                             Navigator.of(context).pop();
                             widget.callBackFuncion();
@@ -477,7 +499,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
               child: ElevatedButton.icon(
                 style: ButtonStyle(
                     backgroundColor: MaterialStateProperty.all(Colors.blue),
-                    minimumSize: MaterialStateProperty.all(const Size(50, 70)),
+                    minimumSize: MaterialStateProperty.all(const Size(40, 70)),
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28.0),
@@ -486,6 +508,111 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
                 label: Text("${selectedDate.toLocal()}".split(' ')[0]),
                 icon: const Icon(
                   Icons.calendar_today_rounded,
+                  color: Colors.white,
+                  size: 24.0,
+                ),
+              ),
+            )
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class TimePickerWidget extends StatefulWidget {
+  TimePickerWidget(this.eventToEdit, this.text, this.category, {Key? key})
+      : super(key: key);
+  final String text;
+  Event eventToEdit;
+  int category;
+  @override
+  State<TimePickerWidget> createState() => _TimePickerWidget();
+}
+
+class _TimePickerWidget extends State<TimePickerWidget> {
+  // TimeOfDay selectedTime = TimeOfDay.now();
+  TimeOfDay selectedTime = TimeOfDay.fromDateTime(DateTime.now()); // 4:30pm
+
+  late String _text;
+
+  @override
+  void initState() {
+    super.initState();
+    if ((widget.eventToEdit.timeFrom != "" && widget.category == 1) ||
+        (widget.eventToEdit.timeTo != "" && widget.category == 2)) {
+      if (widget.category == 1) {
+        log("jedan je");
+        selectedTime = TimeOfDay(
+            hour: int.parse(widget.eventToEdit.timeFrom.split(":")[0]),
+            minute: int.parse(widget.eventToEdit.timeFrom.split(":")[1]));
+      } else {
+        log("dva je");
+        selectedTime = TimeOfDay(
+            hour: int.parse(widget.eventToEdit.timeTo.split(":")[0]),
+            minute: int.parse(widget.eventToEdit.timeTo.split(":")[1]));
+      }
+    }
+    if (widget.category == 1) {
+      log("jedan je");
+      widget.eventToEdit.setTimeFrom(selectedTime.toString());
+    } else {
+      log("dv je");
+      widget.eventToEdit.setTimeto(selectedTime.toString());
+    }
+
+    _text = widget.text;
+  }
+
+  Future<void> _selectDate(BuildContext context,
+      SessionEditingProvider sessionEditingProvider) async {
+    final TimeOfDay? picked =
+        await showTimePicker(context: context, initialTime: selectedTime);
+    // firstDate: DateTime(2015, 8),
+    // lastDate: DateTime(2101));
+    if (picked != null && picked != selectedTime) {
+      setState(() {
+        if (widget.category == 1) {
+          widget.eventToEdit.setTimeFrom(picked.toString().substring(10, 15));
+        } else {
+          widget.eventToEdit.setTimeto(picked.toString().substring(10, 15));
+        }
+        selectedTime = picked;
+      });
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final _sessionEditingProvider =
+        Provider.of<SessionEditingProvider>(context, listen: false);
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: <Widget>[
+            Expanded(
+              child: Text(
+                _text,
+                textAlign: TextAlign.left,
+                // style: Theme.of(context).textTheme.headline2
+              ),
+            ),
+            Expanded(
+              child: ElevatedButton.icon(
+                style: ButtonStyle(
+                    backgroundColor: MaterialStateProperty.all(Colors.blue),
+                    minimumSize: MaterialStateProperty.all(const Size(40, 40)),
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                        RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(28.0),
+                    ))),
+                onPressed: () => _selectDate(context, _sessionEditingProvider),
+                // label: Text("${selectedDate.toLocal()}".split(' ')[0]),
+                label: Text(selectedTime.toString().substring(10, 15)),
+                icon: const Icon(
+                  Icons.access_time_filled_rounded,
                   color: Colors.white,
                   size: 24.0,
                 ),
