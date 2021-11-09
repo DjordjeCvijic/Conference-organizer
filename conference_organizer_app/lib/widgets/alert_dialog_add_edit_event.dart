@@ -277,7 +277,9 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                                 " vrijeme od " +
                                 widget.eventToUpdate.timeFrom.toString() +
                                 " vrijeme DO " +
-                                widget.eventToUpdate.timeTo.toString());
+                                widget.eventToUpdate.timeTo.toString() +
+                                " eventId" +
+                                widget.eventToUpdate.eventId.toString());
 
                             Navigator.of(context).pop();
                             widget.callBackFuncion();
@@ -428,7 +430,7 @@ class _DropDownButtonForPlace extends State<DropDownButtonForPlace> {
                   .toList(),
               onChanged: (value) {
                 setState(() {
-                  this.valuePlace = value!;
+                  valuePlace = value!;
                 });
                 widget._eventToUpdate.setplaceId(value!.placeId);
               }),

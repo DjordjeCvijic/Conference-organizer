@@ -25,7 +25,7 @@ public class SessionController {
     }
 
     @PostMapping("/add")
-    public Session addSession(SessionToEditDto sessionToEditDto){
+    public Session addSession(@RequestBody SessionToEditDto sessionToEditDto){
         return sessionService.saveEditedSession(sessionToEditDto);
 
     }

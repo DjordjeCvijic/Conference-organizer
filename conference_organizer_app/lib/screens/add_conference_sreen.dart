@@ -1,5 +1,3 @@
-import 'dart:developer';
-
 import 'package:conference_organizer_app/providers/conference_provider.dart';
 import 'package:conference_organizer_app/providers/location_provider.dart';
 import 'package:conference_organizer_app/providers/person_provider.dart';

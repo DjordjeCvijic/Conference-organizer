@@ -63,6 +63,8 @@ class ConferenceProvider extends ChangeNotifier {
       "gradingSubjectList": conferenceToSave.gradingSubject,
       "sessionRequestDtoList": conferenceToSave.session
     };
+    print(params);
+    print(jsonEncode(params));
 
     var res = await http.post(
       Uri.parse(apiUrl),

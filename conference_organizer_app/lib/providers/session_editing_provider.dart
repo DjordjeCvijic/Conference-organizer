@@ -34,37 +34,67 @@ class SessionEditingProvider extends ChangeNotifier {
     sessionToEdit.setName(resList["name"]);
     sessionToEdit.setDescription(resList["description"]);
     sessionToEdit.setLocationId(resList["locationId"]);
+
+    print(resList.toString());
+
+    for (var i = 0; i < (resList['eventList'] as List).length; i++) {
+      sessionToEdit.addEvent(Event.valueWithId(
+          (resList['eventList'] as List)[i]['eventId'],
+          "",
+          (resList['eventList'] as List)[i]['eventTypeId'],
+          (resList['eventList'] as List)[i]['moderatorEmail'],
+          "",
+          (resList['eventList'] as List)[i]['placeId'],
+          (resList['eventList'] as List)[i]['name'],
+          (resList['eventList'] as List)[i]['description'],
+          (resList['eventList'] as List)[i]['date'],
+          (resList['eventList'] as List)[i]['timeFrom'],
+          (resList['eventList'] as List)[i]['timeTo']));
+    }
+
+    // print(resList["eventList"]);
+    // for (int i = 0; i < eventList.length; i++) {
+    //   sessionToEdit.addEvent(Event.valueWithId(
+    //       eventList.elementAt(i)["eventId"],
+    //       "",
+    //       eventList.elementAt(i)["eventTypeId"],
+    //       eventList.elementAt(i)["moderatorEmail"],
+    //       "",
+    //       eventList.elementAt(i)["placeId"],
+    //       eventList.elementAt(i)["name"],
+    //       eventList.elementAt(i)["description"],
+    //       eventList.elementAt(i)["date"],
+    //       eventList.elementAt(i)["timeFrom"],
+    //       eventList.elementAt(i)["timeTo"]));
+    // }
     return true;
   }
 
   Future<bool> saveSession() async {
-    var apiUrl = "${Constants.baseUrl}/conference/add";
+    var apiUrl = "${Constants.baseUrl}/session/add";
     var headers = {
       'Content-Type': 'application/json',
       "Accept": "*/*",
       "Accept-Encoding": "gzip, deflate, br"
     };
-    //SharedPreferences prefs = await SharedPreferences.getInstance();
 
-    // final params = {
-    //   "creatorId": int.parse(prefs.getString("personId")!),
-    //   "dateFrom": conferenceToSave.dateFrom,
-    //   "dateTo": conferenceToSave.dateTo,
-    //   "description": conferenceToSave.description,
-    //   "locationId": conferenceToSave.locationId,
-    //   "name": conferenceToSave.name,
-    //   "gradingSubjectList": conferenceToSave.gradingSubject,
-    //   "sessionRequestDtoList": conferenceToSave.session
-    // };
+    final params = {
+      "name": sessionToEdit.name,
+      "description": sessionToEdit.description,
+      "locationId": sessionToEdit.locationId,
+      "sessionId": sessionToEdit.sessionId,
+      "eventList": sessionToEdit.eventList
+    };
+    print(params);
+    print(jsonEncode(params));
+    var res = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers,
+      body: jsonEncode(params),
+    );
 
-    // var res = await http.post(
-    //   Uri.parse(apiUrl),
-    //   headers: headers,
-    //   body: jsonEncode(params),
-    // );
-
-    // log("res status " + res.statusCode.toString());
-    // if (res.statusCode != 200) return false;
+    log("res status " + res.statusCode.toString());
+    if (res.statusCode != 200) return false;
 
     return true;
   }
@@ -160,11 +190,11 @@ class SessionToEdit {
 }
 
 class Event {
-  late int _eventId;
-  late int _sessonId;
-  late int _eventTypeId;
+  late int _eventId = 0;
+  late int _sessonId = 0;
+  late int _eventTypeId = 0;
   late String _moderatorEmail = "";
-  late int _placeId;
+  late int _placeId = 0;
   late String _name = "";
   late String _description = "";
   late String _date = "";
@@ -184,6 +214,28 @@ class Event {
       String timeFrom,
       String timeTo) {
     _eventId = 0;
+    _moderatorEmail = moderatorEmal;
+    _placeId = placeId;
+    _name = name;
+    _description = desc;
+    _date = date;
+    _timeFrom = timeFrom;
+    _timeTo = timeTo;
+    _eventTypeId = eventTypeId;
+  }
+  Event.valueWithId(
+      int eventId,
+      String eventType,
+      int eventTypeId,
+      String moderatorEmal,
+      String place,
+      int placeId,
+      String name,
+      String desc,
+      String date,
+      String timeFrom,
+      String timeTo) {
+    _eventId = eventId;
     _moderatorEmail = moderatorEmal;
     _placeId = placeId;
     _name = name;
@@ -237,12 +289,18 @@ class Event {
     _timeTo = d;
   }
 
-  // Map toJson() => {              OVO TREBA SREDITI
-  //       "description": _description,
-  //       "moderatorEmail": _moderatorEmail,
-  //       "name": name,
-  //       "online": isOnline.toString()
-  //     };
+  Map toJson() => {
+        "date": _date,
+        "description": _description,
+        "eventId": _eventId,
+        "eventTypeId": _eventTypeId,
+        "moderatorEmail": _moderatorEmail,
+        "name": _name,
+        "placeId": _placeId,
+        "sessionId": _sessonId,
+        "timeFrom": _timeFrom,
+        "timeTo": _timeTo
+      };
 }
 
 class EventType {

@@ -7,6 +7,7 @@ import lombok.Setter;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 
 @Getter
 @Setter
@@ -30,10 +31,10 @@ public class Event {
     private LocalDateTime date;
 
     @Column(name = "time_from",nullable = false)
-    private LocalDateTime timeFrom;
+    private LocalTime timeFrom;
 
     @Column(name = "time_to",nullable = false)
-    private LocalDateTime timeTo;
+    private LocalTime timeTo;
 
 
     @Column(name = "access_link")
