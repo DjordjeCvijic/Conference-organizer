@@ -51,4 +51,33 @@ class SupervisingProvider extends ChangeNotifier {
 
     return resList;
   }
+
+  // Future<bool> getEventToEdit(int eventId){
+
+  // }
+}
+
+class EventToEdit {
+  final int _eventId;
+  final String _name;
+  final String _description;
+  final String _lecturerEmail;
+  final bool _isOnline;
+  final String _accessLink;
+  final String _accessPassword;
+
+  final List<int> _resourcesIdList = [];
+
+  EventToEdit(this._eventId, this._name, this._description, this._lecturerEmail,
+      this._isOnline, this._accessLink, this._accessPassword);
+
+  int get eventId => _eventId;
+  String get name => _name;
+  String get description => _description;
+  String get lecturerEmail => _lecturerEmail;
+  bool get isOnline => _isOnline;
+  String get accessLink => _accessLink;
+  String get accessPassword => _accessPassword;
+
+  List<int> get getResourcesIdList => _resourcesIdList;
 }

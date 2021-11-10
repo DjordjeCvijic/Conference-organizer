@@ -1,6 +1,7 @@
 import 'dart:developer';
 
 import 'package:conference_organizer_app/providers/session_editing_provider.dart';
+import 'package:conference_organizer_app/providers/supervising_provider.dart';
 import 'package:provider/provider.dart';
 
 import "../globals.dart" as globals;
@@ -12,6 +13,8 @@ class SessionEventCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    var _supervisionProvider =
+        Provider.of<SupervisingProvider>(context, listen: false);
     return ChangeNotifierProvider.value(
         value: SessionEditingProvider(),
         builder: (context, child) => InkWell(
@@ -70,7 +73,9 @@ class SessionEventCard extends StatelessWidget {
                   });
                 } else {
                   log("ovo ce se izvrsiti kad ase klikne na editovanje veneta " +
-                      data!["type"]);
+                      data!["id"]);
+
+                  // _supervisionProvider
                 }
                 log("ovdje se radi " + data!["type"]);
               },
