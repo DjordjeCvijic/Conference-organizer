@@ -52,21 +52,6 @@ class SessionEditingProvider extends ChangeNotifier {
           (resList['eventList'] as List)[i]['timeTo']));
     }
 
-    // print(resList["eventList"]);
-    // for (int i = 0; i < eventList.length; i++) {
-    //   sessionToEdit.addEvent(Event.valueWithId(
-    //       eventList.elementAt(i)["eventId"],
-    //       "",
-    //       eventList.elementAt(i)["eventTypeId"],
-    //       eventList.elementAt(i)["moderatorEmail"],
-    //       "",
-    //       eventList.elementAt(i)["placeId"],
-    //       eventList.elementAt(i)["name"],
-    //       eventList.elementAt(i)["description"],
-    //       eventList.elementAt(i)["date"],
-    //       eventList.elementAt(i)["timeFrom"],
-    //       eventList.elementAt(i)["timeTo"]));
-    // }
     return true;
   }
 
