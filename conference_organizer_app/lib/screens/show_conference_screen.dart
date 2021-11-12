@@ -175,9 +175,23 @@ class ShowConferenceScreen extends StatelessWidget {
                                     color: Colors.grey[800],
                                     height: 650,
                                     child: Column(
-                                      children: const [
-                                        MyDivider("Sessions"),
-                                        SessionBox(),
+                                      children: [
+                                        FutureBuilder(
+                                            future: Provider.of<
+                                                        ShowConferenceProvider>(
+                                                    context)
+                                                .getAllSessionsToShow(),
+                                            builder: (context,
+                                                    AsyncSnapshot<
+                                                            List<
+                                                                Map<String,
+                                                                    dynamic>>?>
+                                                        snapshot) =>
+                                                snapshot.connectionState ==
+                                                        ConnectionState.waiting
+                                                    ? const CircularProgressIndicator()
+                                                    : SessionBox(
+                                                        snapshot.data!)),
                                       ],
                                     ),
                                   ),
@@ -203,7 +217,8 @@ class ShowConferenceScreen extends StatelessWidget {
 }
 
 class SessionBox extends StatefulWidget {
-  const SessionBox({Key? key}) : super(key: key);
+  List<Map<String, dynamic>> data;
+  SessionBox(this.data, {Key? key}) : super(key: key);
 
   @override
   _SessionBoxState createState() => _SessionBoxState();
@@ -216,68 +231,141 @@ class _SessionBoxState extends State<SessionBox> {
   Widget build(BuildContext context) {
     var _showConferenceProvider =
         Provider.of<ShowConferenceProvider>(context, listen: false);
-    return FutureBuilder(
-        future: _showConferenceProvider.getAllSessionsToShow(),
-        builder: (context,
-                AsyncSnapshot<List<Map<String, dynamic>>?> snapshot) =>
-            snapshot.connectionState == ConnectionState.waiting
-                ? const CircularProgressIndicator()
-                : Column(children: [
-                    Padding(
-                      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+      child: Column(
+        children: [
+          const MyDivider("Session"),
+          Container(
+            decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(10),
+              color: Colors.grey[700],
+            ),
+            child: SizedBox(
+                height: 200,
+                child: ListView.builder(
+                  scrollDirection: Axis.vertical,
+                  shrinkWrap: true,
+                  itemCount: widget.data.length,
+                  itemBuilder: (context, index) {
+                    return Padding(
+                      padding: const EdgeInsets.fromLTRB(10, 10, 10, 0),
                       child: Container(
                         decoration: BoxDecoration(
-                          // borderRadius: BorderRadius.circular(10),
-                          color: Colors.grey[300],
+                          borderRadius: BorderRadius.circular(10),
+                          color: selectedElement == index
+                              ? Colors.blue
+                              : Colors.blue[300],
                         ),
-                        // height: 50,
-                        child: SizedBox(
-                            height: 200,
-                            child: ListView.builder(
-                              scrollDirection: Axis.vertical,
-                              shrinkWrap: true,
-                              itemCount: snapshot.data!.length,
-                              itemBuilder: (context, index) {
-                                return Padding(
-                                  padding:
-                                      const EdgeInsets.fromLTRB(10, 5, 10, 3),
-                                  child: Container(
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(10),
-                                      color: selectedElement == index
-                                          ? Colors.blue
-                                          : Colors.blue[300],
-                                    ),
-                                    child: Row(
-                                      children: [
-                                        Expanded(
-                                          flex: 6,
-                                          child: Text(
-                                              snapshot.data![index]["name"]),
-                                        ),
-                                        Expanded(
-                                          flex: 1,
-                                          child: IconButton(
-                                              onPressed: () {
-                                                _showConferenceProvider
-                                                    .setSessionId(
-                                                        snapshot.data![index]
-                                                            ["sessionId"]);
-                                                setState(() {
-                                                  selectedElement = index;
-                                                });
-                                              },
-                                              icon: const Icon(Icons
-                                                  .remove_red_eye_rounded)),
-                                        )
-                                      ],
-                                    ),
-                                  ),
-                                );
-                              },
-                            )),
+                        child: Row(
+                          children: [
+                            Expanded(
+                              flex: 6,
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
+                                child: Text(
+                                  widget.data[index]["name"],
+                                ),
+                              ),
+                            ),
+                            Expanded(
+                              flex: 1,
+                              child: IconButton(
+                                  onPressed: () {
+                                    _showConferenceProvider.setSessionId(
+                                        widget.data[index]["sessionId"]);
+                                    setState(() {
+                                      selectedElement = index;
+                                    });
+                                  },
+                                  icon:
+                                      const Icon(Icons.remove_red_eye_rounded)),
+                            )
+                          ],
+                        ),
                       ),
-                    )
-                  ]));
+                    );
+                  },
+                )),
+          ),
+          SizedBox(
+            height: 20,
+          ),
+          const MyDivider("Session info"),
+          const SizedBox(
+            height: 20,
+          ),
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text("Name:",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 21, color: Colors.white)),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(widget.data[selectedElement]["name"],
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white))),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text("Description:",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 21, color: Colors.white)),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(widget.data[selectedElement]["description"],
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white))),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text("Moderator:",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 21, color: Colors.white)),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(widget.data[selectedElement]["moderatorEmail"],
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white))),
+            ],
+          ),
+          const SizedBox(
+            height: 30,
+          ),
+          Row(
+            children: [
+              const Expanded(
+                flex: 1,
+                child: Text("Online:",
+                    textAlign: TextAlign.left,
+                    style: TextStyle(fontSize: 21, color: Colors.white)),
+              ),
+              Expanded(
+                  flex: 2,
+                  child: Text(widget.data[selectedElement]["isOnline"],
+                      style:
+                          const TextStyle(fontSize: 16, color: Colors.white))),
+            ],
+          ),
+        ],
+      ),
+    );
   }
 }
