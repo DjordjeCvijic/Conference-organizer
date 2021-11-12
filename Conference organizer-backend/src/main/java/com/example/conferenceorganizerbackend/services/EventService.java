@@ -1,5 +1,6 @@
 package com.example.conferenceorganizerbackend.services;
 
+import com.example.conferenceorganizerbackend.compositekey.EventResourceKey;
 import com.example.conferenceorganizerbackend.dto.EventToEditDto;
 import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.EventResource;
@@ -19,7 +20,8 @@ public class EventService {
     private EventRepository eventRepository;
     @Autowired
     private PersonService personService;
-
+@Autowired
+private ResourceService resourceService;
     @Autowired
     private EventResourceService eventResourceService;
 
@@ -52,5 +54,24 @@ public class EventService {
         resourceList.forEach(e->result.addResourceId(e.getResource().getResourceId()));
 
         return  result;
+    }
+
+    public Event saveEventDto(EventToEditDto eventToEditDto) {
+        Event eventToUpdate=eventRepository.findById(eventToEditDto.getEventId()).get();
+        eventToUpdate.setName(eventToEditDto.getName());
+        eventToUpdate.setDescription(eventToEditDto.getDescription());
+        eventToUpdate.setLecturer(personService.getPersonByEmail(eventToEditDto.getLecturerEmail()));
+        eventToUpdate.setAccessLink(eventToEditDto.getAccessLink());
+        eventToUpdate.setAccessPassword(eventToEditDto.getAccessPassword());
+
+        eventToEditDto.getResourceIdList().forEach(e-> {
+            try {
+                eventResourceService.save(new EventResource(new EventResourceKey(eventToUpdate.getEventId(),e),eventToUpdate,resourceService.getById(e)));
+            } catch (NotFoundException ex) {
+                ex.printStackTrace();
+            }
+        });
+
+        return save(eventToUpdate);
     }
 }

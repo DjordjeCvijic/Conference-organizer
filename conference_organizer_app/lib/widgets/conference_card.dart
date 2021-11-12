@@ -2,6 +2,7 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import "../globals.dart" as globals;
 
 class ConferenceCard extends StatelessWidget {
   final Map<String, dynamic>? data;
@@ -66,6 +67,10 @@ class ConferenceCard extends StatelessWidget {
           )),
       onTap: () {
         log("stisno");
+        Navigator.pushNamed(context, globals.showConferenceSccreeRoute,
+            arguments: {
+              "conferenceId": data!["conference_id"],
+            });
       },
     );
   }

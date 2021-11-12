@@ -76,7 +76,7 @@ class _SessionEventCardState extends State<SessionEventCard> {
                       .then((value) {
                     if (value!) {
                       Navigator.pushNamed(
-                          context, globals.sessionEditingScreenRout,
+                          context, globals.sessionEditingScreenRoute,
                           arguments: {
                             "sessionId": widget.data!["id"],
                             "name": widget.data!["name"],
@@ -342,9 +342,10 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                                         ],
                                       )
                                     : Text("")),
-                        const SizedBox(
-                          height: 10,
-                        ),
+                        // const SizedBox(
+                        //   height: 10,
+                        // ),
+                        const Text("Resources", textAlign: TextAlign.left),
                         const ResourceBox(),
                       ],
                     ),

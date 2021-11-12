@@ -37,9 +37,5 @@ public class EventResource {
     @JoinColumn(name = "resource_id", nullable = false)
     private Resource resource;
 
-    @Column(name = "date_from",nullable = false)
-    private LocalDateTime dateFrom;
 
-    @Column(name = "date_to",nullable = false)
-    private LocalDateTime dateTo;
 }

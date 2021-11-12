@@ -17,4 +17,8 @@ public class EventResourceService {
     public List<EventResource> getAllBuEvent(Event event){
         return eventResourceRepository.findAllByEvent(event);
     }
+
+    public EventResource save(EventResource eventResource){
+        return eventResourceRepository.save(eventResource);
+    }
 }

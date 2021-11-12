@@ -2,6 +2,7 @@ package com.example.conferenceorganizerbackend.services;
 
 import com.example.conferenceorganizerbackend.dto.ConferenceInfoDto;
 import com.example.conferenceorganizerbackend.dto.ConferenceRequestDto;
+import com.example.conferenceorganizerbackend.dto.ConferenceToShowDto;
 import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.model.GradingSubject;
 import com.example.conferenceorganizerbackend.model.Session;
@@ -29,7 +30,7 @@ public class ConferenceService {
     @Autowired
     private SessionService sessionService;
 
-    public Conference findById(int id) throws NotFoundException {
+    public Conference getById(int id) throws NotFoundException {
         return conferenceRepository.findById(id)
                 .orElseThrow(() -> new NotFoundException("Nije pronađen sadržaj sa id-em:" + id));
     }
@@ -66,6 +67,23 @@ public class ConferenceService {
         result.setDateTo(LocalDateTime.parse(conferenceRequestDto.getDateTo().substring(0, 16), formatter));
         result.setLocation(locationService.getById(conferenceRequestDto.getLocationId()));
         result.setCreator(personService.getById(conferenceRequestDto.getCreatorId()));
+        return result;
+    }
+
+    public ConferenceToShowDto getConferenceToShow(Integer conferenceId) {
+        ConferenceToShowDto result=new ConferenceToShowDto();
+        Conference conference= conferenceRepository.getById(conferenceId);
+        result.setName(conference.getName());
+        result.setConferenceId(conferenceId);
+        result.setDescription(conference.getDescription());
+        result.setDateFrom(conference.getDateFrom().toString());
+        result.setDateTo(conference.getDateTo().toString());
+        result.setLocation(conference.getLocation().getName());
+        result.setCreatorEmail(conference.getCreator().getEmail());
+
+        //sessionService.getAllSessionByConference(conference).forEach(e->result.addSessionOnList(e.getSession_id(),e.getName()));
+
+
         return result;
     }
 }

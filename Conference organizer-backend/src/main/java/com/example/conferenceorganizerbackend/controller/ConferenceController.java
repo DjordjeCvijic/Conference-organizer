@@ -2,6 +2,7 @@ package com.example.conferenceorganizerbackend.controller;
 
 import com.example.conferenceorganizerbackend.dto.ConferenceInfoDto;
 import com.example.conferenceorganizerbackend.dto.ConferenceRequestDto;
+import com.example.conferenceorganizerbackend.dto.ConferenceToShowDto;
 import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.services.ConferenceService;
 import javassist.NotFoundException;
@@ -18,7 +19,7 @@ public class ConferenceController {
 
     @GetMapping
     public Conference findById(@RequestParam int id) throws NotFoundException {
-        return conferenceService.findById(id);
+        return conferenceService.getById(id);
     }
 
     @GetMapping("/all")
@@ -29,6 +30,11 @@ public class ConferenceController {
     @PostMapping("/add")
     public Conference save(@RequestBody ConferenceRequestDto conferenceRequestDto) throws NotFoundException {
         return conferenceService.save(conferenceRequestDto);
+    }
+
+    @PostMapping("all-to-show")
+    public ConferenceToShowDto getConferenceToShow(@RequestBody Integer conferenceId){
+        return conferenceService.getConferenceToShow(conferenceId);
     }
 
 }

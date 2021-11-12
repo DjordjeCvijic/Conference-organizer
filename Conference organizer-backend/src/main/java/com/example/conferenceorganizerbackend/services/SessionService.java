@@ -2,6 +2,8 @@ package com.example.conferenceorganizerbackend.services;
 
 import com.example.conferenceorganizerbackend.dto.EventDto;
 import com.example.conferenceorganizerbackend.dto.SessionToEditDto;
+import com.example.conferenceorganizerbackend.dto.SessionToShowDto;
+import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.Session;
 import com.example.conferenceorganizerbackend.repository.SessionRepository;
@@ -30,6 +32,8 @@ public class SessionService {
     private PlaceService placeService;
     @Autowired
     private EventTypeService eventTypeService;
+    @Autowired
+    private ConferenceService conferenceService;
 
 
     public Session saveSession(Session sessionToSave){
@@ -71,5 +75,20 @@ public class SessionService {
 
         return sessionRepository.save(sessionToSave);
 
+    }
+
+    public List<Session> getAllSessionByConference(Conference conference){
+        return sessionRepository.findAllByConference(conference);
+    }
+
+    public List<SessionToShowDto> getAllSessionOfConferenceToShow(Integer conferenceId) throws NotFoundException {
+        List<SessionToShowDto> res=new LinkedList<>();
+        List<Session>sessionList=sessionRepository.findAllByConference(conferenceService.getById(conferenceId));
+
+        sessionList.forEach(e->res.add(new SessionToShowDto(e.getSession_id(), e.getName(), e.getDescription(),e.getModerator().getEmail(),e.getIsOnline()?"YES":"NO")));
+
+
+
+        return res;
     }
 }

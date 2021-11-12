@@ -1,5 +1,6 @@
 package com.example.conferenceorganizerbackend.repository;
 
+import com.example.conferenceorganizerbackend.model.Conference;
 import com.example.conferenceorganizerbackend.model.Person;
 import com.example.conferenceorganizerbackend.model.Session;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -11,4 +12,6 @@ import java.util.List;
 public interface SessionRepository extends JpaRepository<Session,Integer> {
 
     List<Session> findAllByModerator(Person moderator );
+
+    List<Session> findAllByConference(Conference conference);
 }

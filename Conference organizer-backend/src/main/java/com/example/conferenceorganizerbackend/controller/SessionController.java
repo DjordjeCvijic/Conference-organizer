@@ -2,6 +2,7 @@ package com.example.conferenceorganizerbackend.controller;
 
 import com.example.conferenceorganizerbackend.dto.SessionEventInfoDto;
 import com.example.conferenceorganizerbackend.dto.SessionToEditDto;
+import com.example.conferenceorganizerbackend.dto.SessionToShowDto;
 import com.example.conferenceorganizerbackend.model.Session;
 import com.example.conferenceorganizerbackend.services.SessionService;
 import javassist.NotFoundException;
@@ -28,5 +29,10 @@ public class SessionController {
     public Session addSession(@RequestBody SessionToEditDto sessionToEditDto){
         return sessionService.saveEditedSession(sessionToEditDto);
 
+    }
+
+    @PostMapping("all-to-show")
+    public List<SessionToShowDto> getAllSessionOfConferenceToShow(@RequestBody Integer conferenceId) throws NotFoundException {
+        return sessionService.getAllSessionOfConferenceToShow(conferenceId);
     }
 }

@@ -85,11 +85,14 @@ class SupervisingProvider extends ChangeNotifier {
     eventToEdit.setAccessPassword(resList["accessPassword"]);
 
     print(resList.toString());
-
+    eventToEdit._resourcesIdList.clear();
     for (var i = 0; i < (resList['resourceIdList'] as List).length; i++) {
-      eventToEdit
-          .addResourceId(int.parse((resList['resourceIdList'] as List)[i]));
+      log("usao u for");
+      // eventToEdit
+      //     .addResourceId(int.parse((resList['resourceIdList'] as List)[i]));
+      eventToEdit.addResourceId((resList['resourceIdList'] as List)[i]);
     }
+    log("izasao for");
     print("resursi " + eventToEdit.resourcesIdList.toString());
 
     await getResourceAll();
@@ -97,30 +100,33 @@ class SupervisingProvider extends ChangeNotifier {
   }
 
   Future<bool> saveEvent() async {
-    //   var apiUrl = "${Constants.baseUrl}/session/add";
-    //   var headers = {
-    //     'Content-Type': 'application/json',
-    //     "Accept": "*/*",
-    //     "Accept-Encoding": "gzip, deflate, br"
-    //   };
+    var apiUrl = "${Constants.baseUrl}/event/save";
+    var headers = {
+      'Content-Type': 'application/json',
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br"
+    };
 
-    //   final params = {
-    //     "name": sessionToEdit.name,
-    //     "description": sessionToEdit.description,
-    //     "locationId": sessionToEdit.locationId,
-    //     "sessionId": sessionToEdit.sessionId,
-    //     "eventList": sessionToEdit.eventList
-    //   };
-    //   print(params);
-    //   print(jsonEncode(params));
-    //   var res = await http.post(
-    //     Uri.parse(apiUrl),
-    //     headers: headers,
-    //     body: jsonEncode(params),
-    //   );
+    final params = {
+      "accessLink": eventToEdit.accessLink,
+      "accessPassword": eventToEdit._accessPassword,
+      "description": eventToEdit.description,
+      "eventId": eventToEdit.eventId,
+      "isOnline": eventToEdit.isOnline,
+      "lecturerEmail": eventToEdit.lecturerEmail,
+      "name": eventToEdit.name,
+      "resourceIdList": eventToEdit._resourcesIdList,
+    };
+    print(params);
+    print(jsonEncode(params));
+    var res = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers,
+      body: jsonEncode(params),
+    );
 
-    //   log("res status " + res.statusCode.toString());
-    //if (res.statusCode != 200) return false;
+    log("res status " + res.statusCode.toString());
+    if (res.statusCode != 200) return false;
 
     log(eventToEdit.name +
         "" +
