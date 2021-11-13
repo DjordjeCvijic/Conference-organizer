@@ -77,9 +77,7 @@ public class SessionService {
 
     }
 
-    public List<Session> getAllSessionByConference(Conference conference){
-        return sessionRepository.findAllByConference(conference);
-    }
+
 
     public List<SessionToShowDto> getAllSessionOfConferenceToShow(Integer conferenceId) throws NotFoundException {
         List<SessionToShowDto> res=new LinkedList<>();
@@ -87,8 +85,10 @@ public class SessionService {
 
         sessionList.forEach(e->res.add(new SessionToShowDto(e.getSession_id(), e.getName(), e.getDescription(),e.getModerator().getEmail(),e.getIsOnline()?"YES":"NO")));
 
-
-
         return res;
+    }
+
+    public Session getSessionById(Integer sessionId){
+        return sessionRepository.getById(sessionId);
     }
 }

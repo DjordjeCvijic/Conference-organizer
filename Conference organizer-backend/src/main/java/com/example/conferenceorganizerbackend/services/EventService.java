@@ -2,6 +2,8 @@ package com.example.conferenceorganizerbackend.services;
 
 import com.example.conferenceorganizerbackend.compositekey.EventResourceKey;
 import com.example.conferenceorganizerbackend.dto.EventToEditDto;
+import com.example.conferenceorganizerbackend.dto.EventToShowDto;
+import com.example.conferenceorganizerbackend.dto.SessionToShowDto;
 import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.EventResource;
 import com.example.conferenceorganizerbackend.model.Session;
@@ -24,6 +26,8 @@ public class EventService {
 private ResourceService resourceService;
     @Autowired
     private EventResourceService eventResourceService;
+    @Autowired
+    private SessionService sessionService;
 
     public List<Event> getMyEventsForSupervision(String email) {
         return eventRepository.findAllByModerator(personService.getPersonByEmail(email));
@@ -73,5 +77,32 @@ private ResourceService resourceService;
         });
 
         return save(eventToUpdate);
+    }
+
+    public List<EventToShowDto> getAllEventToShow(Integer sessionId) {
+        List<EventToShowDto> res=new LinkedList<>();
+        List<Event>eventList=eventRepository.findAllBySession(sessionService.getSessionById(sessionId));
+
+        for(int i=0;i<eventList.size();i++){
+            Event e=eventList.get(i);
+            EventToShowDto dto=new EventToShowDto();
+            dto.setEventId(e.getEventId());
+            dto.setName(e.getName());
+            dto.setDescription(e.getDescription());
+            dto.setDate(e.getDate().toString());
+            dto.setTimeFrom(e.getTimeFrom().toString());
+            dto.setTimeTo(e.getTimeTo().toString());
+            dto.setPlace(e.getPlace().getName());
+            dto.setAccessLink(e.getAccessLink());
+            dto.setAccessPassword(e.getAccessPassword());
+            dto.setOnline(e.getSession().getIsOnline());
+            dto.setLecturerEmail(e.getLecturer().getEmail());
+            dto.setEventType(e.getEventType().getName());
+
+            res.add(dto);
+        }
+
+
+        return res;
     }
 }

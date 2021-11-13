@@ -8,7 +8,11 @@ import '../const.dart';
 
 class ShowConferenceProvider extends ChangeNotifier {
   late int _conferenceId;
-  late int _sessionId;
+  int _sessionId = -1;
+  late int _eventId = -1; //-1 ostaje ako nema eventova
+
+  int get sessionId => _sessionId;
+  int get eventId => _eventId;
 
   Future<Map<String, dynamic>?> getConferenceToShow(int conferenceId) async {
     log(conferenceId.toString());
@@ -54,11 +58,50 @@ class ShowConferenceProvider extends ChangeNotifier {
     var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
         .map((e) => e as Map<String, dynamic>)
         .toList();
-    _sessionId = resList[0]["sessionId"];
+
+    setSessionId(-1); //samo da resetujem
+    if (resList.isNotEmpty) {
+      setSessionId(resList[0]["sessionId"]);
+    }
+
+    // _sessionId = resList[0]["sessionId"];
+    return resList;
+  }
+
+  Future<List<Map<String, dynamic>>?> getAllEventsToShow() async {
+    var apiUrl = Constants.baseUrl;
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+    };
+
+    var res = await http.post(Uri.parse('$apiUrl/event/all-to-show'),
+        headers: headers, body: _sessionId.toString());
+
+    log("session status " + res.statusCode.toString());
+
+    if (res.statusCode != 200) return null;
+
+    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+    _eventId = -1; //samo da resetujem
+    if (resList.isNotEmpty) {
+      _eventId = resList[0]["eventId"];
+    }
+    //setSessionId(resList[0]["sessionId"]);
+    // _sessionId = resList[0]["sessionId"];
     return resList;
   }
 
   void setSessionId(int id) {
     _sessionId = id;
+    notifyListeners();
+  }
+
+  void setEventId(int id) {
+    _eventId = id;
   }
 }
