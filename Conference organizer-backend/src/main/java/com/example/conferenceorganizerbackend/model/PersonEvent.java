@@ -1,6 +1,5 @@
 package com.example.conferenceorganizerbackend.model;
 
-import com.example.conferenceorganizerbackend.compositekey.EventResourceKey;
 import com.example.conferenceorganizerbackend.compositekey.PersonEventKey;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import lombok.AllArgsConstructor;

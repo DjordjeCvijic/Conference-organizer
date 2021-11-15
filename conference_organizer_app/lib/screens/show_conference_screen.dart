@@ -165,7 +165,15 @@ class ShowConferenceScreen extends StatelessWidget {
                                       ),
                                       const SizedBox(
                                         height: 55,
-                                      )
+                                      ),
+                                      ElevatedButton(
+                                          onPressed: () {
+                                            showDialog(
+                                                context: context,
+                                                builder: (_) =>
+                                                    const AlertDialogForGrades());
+                                          },
+                                          child: const Text("Grade"))
                                     ]),
                                   ),
                                 )),
@@ -414,6 +422,8 @@ class EventBox extends StatefulWidget {
 
 class _EventBoxState extends State<EventBox> {
   int selectedElement = 0;
+
+  get child => null;
 
   @override
   Widget build(BuildContext context) {
@@ -683,6 +693,30 @@ class _EventBoxState extends State<EventBox> {
                                               color: Colors.white))),
                                 ],
                               ),
+                        const SizedBox(
+                          height: 18,
+                        ),
+                        FutureBuilder(
+                            future: _showConferenceProvider.isSubscribed(),
+                            builder: (context, AsyncSnapshot<bool?> snapshot) =>
+                                snapshot.connectionState ==
+                                        ConnectionState.waiting
+                                    ? const CircularProgressIndicator()
+                                    : snapshot.data == true
+                                        ? ElevatedButton(
+                                            onPressed: () {
+                                              _showConferenceProvider
+                                                  .subscribe();
+                                              setState(() {});
+                                            },
+                                            child: const Text("Unsubscribe"))
+                                        : ElevatedButton(
+                                            onPressed: () async {
+                                              await _showConferenceProvider
+                                                  .subscribe();
+                                              setState(() {});
+                                            },
+                                            child: const Text("Subscribe")))
                       ],
                     ),
                   ),
@@ -690,5 +724,22 @@ class _EventBoxState extends State<EventBox> {
               ],
             ),
     );
+  }
+}
+
+class AlertDialogForGrades extends StatelessWidget {
+  const AlertDialogForGrades({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    var _showConferenceProvider=Provider.of<ShowConferenceProvider>(context,listen:false);
+    return 
+    
+    AlertDialog(title: const Text("Unesite "), content:SizedBox(
+                height: 400,
+                width: 450,
+                child: ,
+                
+                actions: []));
   }
 }

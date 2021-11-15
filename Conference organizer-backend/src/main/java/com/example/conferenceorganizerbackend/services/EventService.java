@@ -4,6 +4,7 @@ import com.example.conferenceorganizerbackend.compositekey.EventResourceKey;
 import com.example.conferenceorganizerbackend.dto.EventToEditDto;
 import com.example.conferenceorganizerbackend.dto.EventToShowDto;
 import com.example.conferenceorganizerbackend.dto.SessionToShowDto;
+import com.example.conferenceorganizerbackend.dto.UserEventDto;
 import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.EventResource;
 import com.example.conferenceorganizerbackend.model.Session;
@@ -43,7 +44,7 @@ private ResourceService resourceService;
         return eventRepository.save(event);
     }
 
-    public EventToEditDto getEventById(int id) throws NotFoundException {
+    public EventToEditDto getEventToEditDtoById(int id) throws NotFoundException {
         Event event= eventRepository.findById(id).orElseThrow(()->new NotFoundException("Ne postoji event sa id "+id));
         EventToEditDto result=new EventToEditDto();
         result.setEventId(event.getEventId());
@@ -105,4 +106,10 @@ private ResourceService resourceService;
 
         return res;
     }
+
+    public Event getById(Integer eventId) throws NotFoundException {
+        return eventRepository.findById(eventId).orElseThrow(()->new NotFoundException("nema eventa"));
+    }
+
+
 }
