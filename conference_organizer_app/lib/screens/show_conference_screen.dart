@@ -170,8 +170,12 @@ class ShowConferenceScreen extends StatelessWidget {
                                           onPressed: () {
                                             showDialog(
                                                 context: context,
-                                                builder: (_) =>
-                                                    const AlertDialogForGrades());
+                                                builder: (_) => ChangeNotifierProvider<
+                                                        ShowConferenceProvider>.value(
+                                                    value:
+                                                        ShowConferenceProvider(),
+                                                    child:
+                                                        const AlertDialogForGrades()));
                                           },
                                           child: const Text("Grade"))
                                     ]),
@@ -732,14 +736,21 @@ class AlertDialogForGrades extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _showConferenceProvider=Provider.of<ShowConferenceProvider>(context,listen:false);
-    return 
-    
-    AlertDialog(title: const Text("Unesite "), content:SizedBox(
-                height: 400,
-                width: 450,
-                child: ,
-                
-                actions: []));
+    var _showConferenceProvider =
+        Provider.of<ShowConferenceProvider>(context, listen: false);
+    return AlertDialog(
+      title: const Text("Grading "),
+      content: SizedBox(height: 400, width: 450, child: Text("tijelo")),
+      actions: [
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'OK'),
+          child: const Text('OK'),
+        ),
+      ],
+    );
   }
 }

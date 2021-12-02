@@ -1,6 +1,7 @@
 package com.example.conferenceorganizerbackend.services;
 
 import com.example.conferenceorganizerbackend.dto.GradingSubjectDto;
+import com.example.conferenceorganizerbackend.dto.PersonConferenceDto;
 import com.example.conferenceorganizerbackend.model.GradingSubject;
 import com.example.conferenceorganizerbackend.repository.GradingSubjectRepository;
 import io.swagger.v3.oas.models.links.Link;
@@ -29,5 +30,9 @@ public class GradingSubjectService {
 
         gradingSubjectList.forEach(e->result.add(new GradingSubjectDto(e.getGradingSubjectId(),e.getName(),0)));
         return result;
+    }
+
+    public boolean isGradingDone(PersonConferenceDto personConferenceDto) {
+        boolean res=false;
     }
 }

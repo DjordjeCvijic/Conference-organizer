@@ -1,5 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
+import 'dart:isolate';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
@@ -152,7 +153,29 @@ class ShowConferenceProvider extends ChangeNotifier {
     if (res.statusCode != 200) log("greska kod prijavljivanja na event");
   }
 
-  Future<List<Map<String, dynamic>>?> getGradingSubjectOfConference() async {
+  Future<bool?> isGradingDone() async {
+    var apiUrl = Constants.baseUrl;
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+    };
+
+    var res = await http.post(
+        Uri.parse('$apiUrl/grading-subject/is-grading-done'),
+        headers: headers,
+        body: _conferenceId.toString());
+
+    if (res.statusCode != 200) return null;
+
+    bool resList = (jsonDecode(utf8.decode(res.bodyBytes)) as bool);
+
+    return resList;
+  }
+
+  Future<List<Map<String, dynamic>>?>
+      getGradingSubjectOfConferenceToGrade() async {
     var apiUrl = Constants.baseUrl;
 
     var headers = {
