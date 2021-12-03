@@ -24,7 +24,7 @@ public class GradingSubjectController {
         return gradingSubjectService.getAllForConference(conferenceId);
     }
     @PostMapping("/is-grading-done")
-    public boolean isGradingDone(@RequestBody PersonConferenceDto personConferenceDto){
+    public boolean isGradingDone(@RequestBody PersonConferenceDto personConferenceDto) throws NotFoundException {
         return  gradingSubjectService.isGradingDone(personConferenceDto);
     }
 }

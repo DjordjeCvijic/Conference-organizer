@@ -5,13 +5,16 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.LinkedList;
+import java.util.List;
+
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-public class GradingSubjectDto {
+public class GradesFromPersonDto {
+    private Integer personId;
+    private List<GradingSubjectDto> grades=new LinkedList<>();
 
-    private Integer gradingSubjectId;
-    private String gradingSubjectName;
-    private Double grade;
+
 }

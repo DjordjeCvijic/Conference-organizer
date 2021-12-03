@@ -3,6 +3,7 @@ import 'dart:developer';
 import 'package:conference_organizer_app/providers/show_conference_provider.dart';
 import 'package:conference_organizer_app/widgets/my_divider.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_rating_bar/flutter_rating_bar.dart';
 import 'package:provider/provider.dart';
 
 class ShowConferenceScreen extends StatelessWidget {
@@ -174,8 +175,8 @@ class ShowConferenceScreen extends StatelessWidget {
                                                         ShowConferenceProvider>.value(
                                                     value:
                                                         ShowConferenceProvider(),
-                                                    child:
-                                                        const AlertDialogForGrades()));
+                                                    child: AlertDialogForGrades(
+                                                        conferenceId)));
                                           },
                                           child: const Text("Grade"))
                                     ]),
@@ -732,25 +733,163 @@ class _EventBoxState extends State<EventBox> {
 }
 
 class AlertDialogForGrades extends StatelessWidget {
-  const AlertDialogForGrades({Key? key}) : super(key: key);
+  var conferenceId;
+  AlertDialogForGrades(this.conferenceId, {Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     var _showConferenceProvider =
         Provider.of<ShowConferenceProvider>(context, listen: false);
-    return AlertDialog(
-      title: const Text("Grading "),
-      content: SizedBox(height: 400, width: 450, child: Text("tijelo")),
-      actions: [
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'OK'),
-          child: const Text('OK'),
-        ),
-      ],
-    );
+    return FutureBuilder(
+        future: _showConferenceProvider.isGradingDone(conferenceId),
+        builder: (context, AsyncSnapshot<bool?> snapshot) => snapshot
+                    .connectionState ==
+                ConnectionState.waiting
+            ? const CircularProgressIndicator()
+            : snapshot.data!
+                ? AlertDialog(
+                    title: const Text("Grading "),
+                    content: SizedBox(
+                        height: 400,
+                        width: 450,
+                        child: FutureBuilder(
+                            future: _showConferenceProvider
+                                .getGradesOfConference(conferenceId),
+                            builder: (context,
+                                    AsyncSnapshot<List<Map<String, dynamic>>?>
+                                        snapshot) =>
+                                snapshot.connectionState ==
+                                        ConnectionState.waiting
+                                    ? const CircularProgressIndicator()
+                                    : ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: snapshot.data!.length,
+                                        itemBuilder: (context, index) {
+                                          String _gradingSubjectName =
+                                              snapshot.data![index]
+                                                  ["gradingSubjectName"];
+                                          String _avaregeGrade = snapshot
+                                              .data![index]["grade"]
+                                              .toString();
+
+                                          return Padding(
+                                            padding: const EdgeInsets.all(18.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  flex: 5,
+                                                  child: Text(
+                                                    _gradingSubjectName,
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15),
+                                                  ),
+                                                ),
+                                                Expanded(
+                                                  flex: 1,
+                                                  child: Text(
+                                                    _avaregeGrade + "/5",
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15),
+                                                  ),
+                                                ),
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ))),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'OK'),
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  )
+                : AlertDialog(
+                    title: const Text("Grading "),
+                    content: SizedBox(
+                        height: 400,
+                        width: 450,
+                        child: FutureBuilder(
+                            future: _showConferenceProvider
+                                .getGradingSubjectOfConferenceToGrade(
+                                    conferenceId),
+                            builder: (context,
+                                    AsyncSnapshot<List<Map<String, dynamic>>?>
+                                        snapshot) =>
+                                snapshot.connectionState ==
+                                        ConnectionState.waiting
+                                    ? const CircularProgressIndicator()
+                                    : ListView.builder(
+                                        physics:
+                                            const NeverScrollableScrollPhysics(),
+                                        shrinkWrap: true,
+                                        itemCount: _showConferenceProvider
+                                            .gradingSubjectList.length,
+                                        itemBuilder: (context, index) {
+                                          String _gradingSubjectName =
+                                              _showConferenceProvider
+                                                  .gradingSubjectList
+                                                  .elementAt(index)
+                                                  .gradingSubjectName;
+
+                                          return Padding(
+                                            padding: const EdgeInsets.all(18.0),
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: Text(
+                                                    _gradingSubjectName,
+                                                    style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 15),
+                                                  ),
+                                                ),
+                                                RatingBar.builder(
+                                                    itemBuilder: (context, _) =>
+                                                        const Icon(
+                                                          Icons.star,
+                                                          color: Colors.amber,
+                                                        ),
+                                                    itemSize: 20,
+                                                    initialRating: 0,
+                                                    direction: Axis.horizontal,
+                                                    onRatingUpdate: (grade) {
+                                                      _showConferenceProvider
+                                                          .gradingSubjectList
+                                                          .elementAt(index)
+                                                          .setGrade(grade);
+                                                      log("ocjena " +
+                                                          int.parse(grade
+                                                                  .toString())
+                                                              .toString());
+                                                    })
+                                              ],
+                                            ),
+                                          );
+                                        },
+                                      ))),
+                    actions: [
+                      TextButton(
+                        onPressed: () => Navigator.pop(context, 'Cancel'),
+                        child: const Text('Cancel'),
+                      ),
+                      TextButton(
+                        onPressed: () {
+                          _showConferenceProvider
+                              .saveGrades()
+                              .then((value) => Navigator.pop(context, 'OK'));
+                        },
+                        child: const Text('OK'),
+                      ),
+                    ],
+                  ));
   }
 }

@@ -35,6 +35,6 @@ public class Evaluation {
     private GradingSubject gradingSubject;
 
     @Column(name = "grade",nullable = false)
-    private Double grade;
+    private Integer grade;
 
 }

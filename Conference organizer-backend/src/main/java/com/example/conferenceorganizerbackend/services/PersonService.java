@@ -63,8 +63,8 @@ public class PersonService {
         else throw new NotFoundException("Password is incorrect");
     }
 
-    public Person getById(Integer creatorId) throws NotFoundException {
-        return personRepository.findById(creatorId).orElseThrow(() -> new NotFoundException("Osoba sa id ne postoji"));
+    public Person getById(Integer personId) throws NotFoundException {
+        return personRepository.findById(personId).orElseThrow(() -> new NotFoundException("Osoba sa id ne postoji"));
     }
 
     public Boolean personExist(String email)  {

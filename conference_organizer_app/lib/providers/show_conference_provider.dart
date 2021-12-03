@@ -15,9 +15,10 @@ class ShowConferenceProvider extends ChangeNotifier {
 
   int get sessionId => _sessionId;
   int get eventId => _eventId;
+  List<GradingSubject> gradingSubjectList = [];
 
   Future<Map<String, dynamic>?> getConferenceToShow(int conferenceId) async {
-    log(conferenceId.toString());
+    log("konference id " + conferenceId.toString());
     _conferenceId = conferenceId;
     var apiUrl = Constants.baseUrl;
 
@@ -153,29 +154,40 @@ class ShowConferenceProvider extends ChangeNotifier {
     if (res.statusCode != 200) log("greska kod prijavljivanja na event");
   }
 
-  Future<bool?> isGradingDone() async {
-    var apiUrl = Constants.baseUrl;
+  Future<bool?> isGradingDone(var conferenceId) async {
+    var apiUrl = "${Constants.baseUrl}/grading-subject/is-grading-done";
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var logedPersonId = prefs.getString("personId");
 
     var headers = {
       "Content-Type": "application/json",
       "Accept": "*/*",
       "Accept-Encoding": "gzip, deflate, br",
     };
+    log("pred pozvianjem " +
+        logedPersonId.toString() +
+        " konferencija: " +
+        conferenceId.toString());
 
-    var res = await http.post(
-        Uri.parse('$apiUrl/grading-subject/is-grading-done'),
+    var res = await http.post(Uri.parse(apiUrl),
         headers: headers,
-        body: _conferenceId.toString());
+        body: jsonEncode({
+          "personId": logedPersonId,
+          "conferenceId": conferenceId.toString()
+        }));
+
+    log("pozvano " + res.statusCode.toString());
 
     if (res.statusCode != 200) return null;
 
     bool resList = (jsonDecode(utf8.decode(res.bodyBytes)) as bool);
+    log("REs: " + resList.toString());
 
     return resList;
   }
 
-  Future<List<Map<String, dynamic>>?>
-      getGradingSubjectOfConferenceToGrade() async {
+  Future<List<Map<String, dynamic>>?> getGradingSubjectOfConferenceToGrade(
+      var conferenceId) async {
     var apiUrl = Constants.baseUrl;
 
     var headers = {
@@ -185,7 +197,7 @@ class ShowConferenceProvider extends ChangeNotifier {
     };
 
     var res = await http.post(Uri.parse('$apiUrl/grading-subject/get-all'),
-        headers: headers, body: _conferenceId.toString());
+        headers: headers, body: conferenceId.toString());
 
     log("session status " + res.statusCode.toString());
 
@@ -195,6 +207,77 @@ class ShowConferenceProvider extends ChangeNotifier {
         .map((e) => e as Map<String, dynamic>)
         .toList();
 
+    gradingSubjectList.clear();
+    for (int i = 0; i < resList.length; i++) {
+      gradingSubjectList.add(GradingSubject.value(
+          resList[i]["gradingSubjectId"],
+          resList[i]["gradingSubjectName"],
+          resList[i]["grade"]));
+    }
+    return resList;
+  }
+
+  Future<void> saveGrades() async {
+    for (int i = 0; i < gradingSubjectList.length; i++) {
+      log(gradingSubjectList.elementAt(i)._gradingSubjectName +
+          " " +
+          gradingSubjectList.elementAt(i)._grade.toString());
+    }
+
+    var apiUrl = "${Constants.baseUrl}/evaluation/save-grades";
+    var headers = {
+      'Content-Type': 'application/json',
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br"
+    };
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    final params = {
+      "personId": int.parse(prefs.getString("personId")!),
+      "grades": gradingSubjectList
+    };
+    print(params);
+    print(jsonEncode(params));
+
+    var res = await http.post(
+      Uri.parse(apiUrl),
+      headers: headers,
+      body: jsonEncode(params),
+    );
+
+    log("res status " + res.statusCode.toString());
+    // if (res.statusCode != 200) return false;
+    // return true;
+  }
+
+  Future<List<Map<String, dynamic>>?> getGradesOfConference(
+      var conferenceId) async {
+    var apiUrl = Constants.baseUrl;
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+    };
+
+    var res = await http.post(Uri.parse('$apiUrl/evaluation/get-grades'),
+        headers: headers, body: conferenceId.toString());
+
+    log("session status " + res.statusCode.toString());
+
+    if (res.statusCode != 200) return null;
+
+    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+        .map((e) => e as Map<String, dynamic>)
+        .toList();
+
+    log("duzina listE:    " + resList.length.toString());
+    // for (int i = 0; i < resList.length; i++) {
+    //   gradingSubjectList.add(GradingSubject.value(
+    //       resList[i]["gradingSubjectId"],
+    //       resList[i]["gradingSubjectName"],
+    //       resList[i]["grade"]));
+    //}
     return resList;
   }
 }
@@ -202,11 +285,11 @@ class ShowConferenceProvider extends ChangeNotifier {
 class GradingSubject {
   late int _gradingSubjectId;
   late String _gradingSubjectName;
-  late int _grade;
+  late double _grade;
 
   GradingSubject();
   GradingSubject.value(
-      int gradingSubjectId, String gradingSubjectName, int grade) {
+      int gradingSubjectId, String gradingSubjectName, double grade) {
     _gradingSubjectId = gradingSubjectId;
     _gradingSubjectName = gradingSubjectName;
     _grade = grade;
@@ -214,7 +297,13 @@ class GradingSubject {
 
   String get gradingSubjectName => _gradingSubjectName;
 
-  setGrade(int g) {
+  setGrade(double g) {
     _grade = g;
   }
+
+  Map toJson() => {
+        "gradingSubjectId": _gradingSubjectId.toString(),
+        "gradingSubjectName": _gradingSubjectName,
+        "grade": _grade.toString()
+      };
 }
