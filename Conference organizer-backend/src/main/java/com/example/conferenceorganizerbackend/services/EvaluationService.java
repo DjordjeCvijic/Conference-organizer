@@ -42,7 +42,10 @@ public class EvaluationService {
             for(Evaluation e:evaluationList){
                 gradingSubject.setGrade(gradingSubject.getGrade()+e.getGrade());
             }
-            gradingSubject.setGrade(gradingSubject.getGrade()/evaluationList.size());
+
+            if(gradingSubject.getGrade()!=0.0)
+                gradingSubject.setGrade(Math.round((gradingSubject.getGrade()/evaluationList.size())*100.0)/100.0);
+
         }
 
 

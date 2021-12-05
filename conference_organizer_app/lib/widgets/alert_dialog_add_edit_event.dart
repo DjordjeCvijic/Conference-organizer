@@ -244,43 +244,6 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                             _sessionEditigProvider.sessionToEdit
                                 .addEvent(widget.eventToUpdate);
 
-                            // if (widget.eventToUpdate.eventId!=0) {
-                            //   _sessionEditigProvider.sessionToEdit
-                            //       .removeEvent(widget.eventToUpdate);
-                            // }
-
-                            // Event evetnToSave = Event.value(
-                            //     "tip event",
-                            //     moderatorEmailController.text,
-                            //     "mjesto",
-                            //     1,
-                            //     nameController.text,
-                            //     descriptionController.text,
-                            //     "prvi datum",
-                            //     "drugi datum",);
-
-                            // // _conferenceProvider.conferenceToSave
-                            // //     .addSession(sessionToSave);
-                            // _sessionEditigProvider.sessionToEdit
-                            //     .addEvent(evetnToSave);
-                            print(widget.eventToUpdate.name +
-                                " " +
-                                widget.eventToUpdate.moderatorEmail +
-                                " " +
-                                widget.eventToUpdate.description +
-                                " " +
-                                widget.eventToUpdate.eventTypeId.toString() +
-                                " datum: " +
-                                widget.eventToUpdate.date +
-                                " mjesto " +
-                                widget.eventToUpdate.placeId.toString() +
-                                " vrijeme od " +
-                                widget.eventToUpdate.timeFrom.toString() +
-                                " vrijeme DO " +
-                                widget.eventToUpdate.timeTo.toString() +
-                                " eventId" +
-                                widget.eventToUpdate.eventId.toString());
-
                             Navigator.of(context).pop();
                             widget.callBackFuncion();
                           } else {

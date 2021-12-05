@@ -57,15 +57,27 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
                 },
               ),
             ),
+            SizedBox(
+              width: 300,
+              child: CustomTabElevatedButton(
+                tabTitle: "Subscribe to",
+                active: chosenTab == 2,
+                onTap: () {
+                  if (chosenTab != 2) {
+                    setState(
+                      () {
+                        chosenTab = 2;
+                      },
+                    );
+                  }
+                },
+              ),
+            ),
           ],
         ),
         const SizedBox(
           height: 8,
         ),
-        // Text(
-        //   "All conferences:",
-        //   style: Theme.of(context).textTheme.headline3,
-        // ),
         FutureBuilder(
             future: conferenceProvider.getAllConferences(chosenTab),
             builder: (context,

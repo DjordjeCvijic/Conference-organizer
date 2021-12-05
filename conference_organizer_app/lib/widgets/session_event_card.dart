@@ -341,10 +341,7 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                                           ),
                                         ],
                                       )
-                                    : Text("")),
-                        // const SizedBox(
-                        //   height: 10,
-                        // ),
+                                    : const Text("")),
                         const Text("Resources", textAlign: TextAlign.left),
                         const ResourceBox(),
                       ],

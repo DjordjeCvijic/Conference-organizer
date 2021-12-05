@@ -18,25 +18,54 @@ class ConferenceProvider extends ChangeNotifier {
       "Accept": "*/*",
       "Accept-Encoding": "gzip, deflate, br",
     };
+    http.Response res;
+    List<Map<String, dynamic>> resList;
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var logedUserId = prefs.getString("personId");
 
-    var res = await http.get(
-      Uri.parse('$apiUrl/conference/all'),
-      headers: headers,
-    );
+    if (type == 2) {
+      res = await http.post(
+          Uri.parse('$apiUrl/conference/get-conferences-subscribed-to'),
+          headers: headers,
+          body: logedUserId);
 
-    if (res.statusCode != 200) return null;
+      if (res.statusCode != 200) return null;
 
-    var resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
-        .map((e) => e as Map<String, dynamic>)
-        .toList();
+      resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+          .map((e) => e as Map<String, dynamic>)
+          .toList();
 
-    if (type != 0) {
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      String? logedEmail = prefs.getString("email");
-      for (var i = 0; i < resList.length; i++) {
-        if (resList[i]['creatorEmail'] != logedEmail) {
-          resList.removeAt(i);
-          i--;
+      // if (type == 1) {
+      //   SharedPreferences prefs = await SharedPreferences.getInstance();
+      //   String? logedEmail = prefs.getString("email");
+      //   for (var i = 0; i < resList.length; i++) {
+      //     if (resList[i]['creatorEmail'] != logedEmail) {
+      //       resList.removeAt(i);
+      //       i--;
+      //     }
+      //   }
+      // }
+
+    } else {
+      res = await http.get(
+        Uri.parse('$apiUrl/conference/all'),
+        headers: headers,
+      );
+
+      if (res.statusCode != 200) return null;
+
+      resList = (jsonDecode(utf8.decode(res.bodyBytes)) as List)
+          .map((e) => e as Map<String, dynamic>)
+          .toList();
+
+      if (type == 1) {
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        String? logedEmail = prefs.getString("email");
+        for (var i = 0; i < resList.length; i++) {
+          if (resList[i]['creatorEmail'] != logedEmail) {
+            resList.removeAt(i);
+            i--;
+          }
         }
       }
     }
@@ -63,8 +92,6 @@ class ConferenceProvider extends ChangeNotifier {
       "gradingSubjectList": conferenceToSave.gradingSubject,
       "sessionRequestDtoList": conferenceToSave.session
     };
-    print(params);
-    print(jsonEncode(params));
 
     var res = await http.post(
       Uri.parse(apiUrl),

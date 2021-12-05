@@ -35,8 +35,6 @@ class SessionEditingProvider extends ChangeNotifier {
     sessionToEdit.setDescription(resList["description"]);
     sessionToEdit.setLocationId(resList["locationId"]);
 
-    print(resList.toString());
-
     for (var i = 0; i < (resList['eventList'] as List).length; i++) {
       sessionToEdit.addEvent(Event.valueWithId(
           (resList['eventList'] as List)[i]['eventId'],
@@ -70,8 +68,6 @@ class SessionEditingProvider extends ChangeNotifier {
       "sessionId": sessionToEdit.sessionId,
       "eventList": sessionToEdit.eventList
     };
-    print(params);
-    print(jsonEncode(params));
     var res = await http.post(
       Uri.parse(apiUrl),
       headers: headers,
@@ -176,7 +172,7 @@ class SessionToEdit {
 
 class Event {
   late int _eventId = 0;
-  late int _sessonId = 0;
+  late final int _sessonId = 0;
   late int _eventTypeId = 0;
   late String _moderatorEmail = "";
   late int _placeId = 0;

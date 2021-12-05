@@ -1,9 +1,8 @@
 package com.example.conferenceorganizerbackend.services;
 
-import com.example.conferenceorganizerbackend.dto.ConferenceInfoDto;
-import com.example.conferenceorganizerbackend.dto.ConferenceRequestDto;
-import com.example.conferenceorganizerbackend.dto.ConferenceToShowDto;
+import com.example.conferenceorganizerbackend.dto.*;
 import com.example.conferenceorganizerbackend.model.Conference;
+import com.example.conferenceorganizerbackend.model.Event;
 import com.example.conferenceorganizerbackend.model.GradingSubject;
 import com.example.conferenceorganizerbackend.model.Session;
 import com.example.conferenceorganizerbackend.repository.ConferenceRepository;
@@ -11,6 +10,7 @@ import javassist.NotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.sql.SQLClientInfoException;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.LinkedList;
@@ -29,6 +29,10 @@ public class ConferenceService {
     private GradingSubjectService gradingSubjectService;
     @Autowired
     private SessionService sessionService;
+    @Autowired
+    private EventService eventService;
+    @Autowired
+    private PersonEventService personEventService;
 
     public Conference getById(int id) throws NotFoundException {
         return conferenceRepository.findById(id)
@@ -85,5 +89,41 @@ public class ConferenceService {
 
 
         return result;
+    }
+
+    public boolean isSubscribedToConference(PersonConferenceDto personConferenceDto) throws NotFoundException {
+
+        boolean flag=false;
+        List<Session> sessionList=sessionService.getSessionsByConference(conferenceRepository.getById(personConferenceDto.getConferenceId()));
+        List<Event>eventList=new LinkedList<>();
+        for (Session s:sessionList){
+            eventService.getEventsOfSession(s).forEach(e->eventList.add(e));
+        }
+        for (Event e:eventList){
+            try {
+                personEventService.isSubscribed(new UserEventDto(personConferenceDto.getPersonId(),e.getEventId()));
+                flag=true;
+            }catch (NotFoundException ex){}
+
+        }
+        System.out.println(flag);
+        return  flag;
+
+    }
+
+    public List<ConferenceInfoDto> getConferencesSubscribedTo(Integer personId) throws NotFoundException {
+        List<ConferenceInfoDto> res = new LinkedList<>();
+        List<Conference> conferenceList = new LinkedList<>();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+
+        List<Event> eventsOfUser=personEventService.getEventsOfPersonSubscribedOn(personService.getById(personId));
+        eventsOfUser.forEach(event->conferenceList.add(event.getSession().getConference()));
+
+
+        conferenceList.forEach(e -> res.add(new ConferenceInfoDto(e.getConference_id(), e.getName(), e.getDateFrom().format(formatter), e.getDateTo().format(formatter), e.getLocation().getName(), e.getCreator().getEmail())));
+        return res;
+
+
+
     }
 }

@@ -334,7 +334,7 @@ class _SessionBoxState extends State<SessionBox> {
                         },
                       )),
                 ),
-                SizedBox(
+                const SizedBox(
                   height: 20,
                 ),
                 const MyDivider("Session info"),
@@ -733,7 +733,7 @@ class _EventBoxState extends State<EventBox> {
 }
 
 class AlertDialogForGrades extends StatelessWidget {
-  var conferenceId;
+  int conferenceId;
   AlertDialogForGrades(this.conferenceId, {Key? key}) : super(key: key);
 
   @override

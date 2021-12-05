@@ -13,5 +13,5 @@ public class GradingSubjectDto {
 
     private Integer gradingSubjectId;
     private String gradingSubjectName;
-    private Double grade;
+    private Double grade=0.0;
 }

@@ -91,4 +91,8 @@ public class SessionService {
     public Session getSessionById(Integer sessionId){
         return sessionRepository.getById(sessionId);
     }
+
+    public List<Session>getSessionsByConference(Conference conference){
+        return sessionRepository.findAllByConference(conference);
+    }
 }

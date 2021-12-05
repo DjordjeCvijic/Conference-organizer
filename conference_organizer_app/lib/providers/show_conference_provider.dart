@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-import 'dart:isolate';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
@@ -154,6 +152,30 @@ class ShowConferenceProvider extends ChangeNotifier {
     if (res.statusCode != 200) log("greska kod prijavljivanja na event");
   }
 
+  Future<bool> isSubscribedToConference(var conferenceId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var logedPersonId = prefs.getString("personId");
+
+    var apiUrl = Constants.baseUrl;
+
+    var headers = {
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Accept-Encoding": "gzip, deflate, br",
+    };
+
+    var res = await http.post(
+      Uri.parse('$apiUrl/conference/is-subscribed-to-conference'),
+      headers: headers,
+      body: jsonEncode(
+          {"personId": logedPersonId, "conferenceId": conferenceId.toString()}),
+    );
+
+    if (res.statusCode != 200) return false;
+
+    return true;
+  }
+
   Future<bool?> isGradingDone(var conferenceId) async {
     var apiUrl = "${Constants.baseUrl}/grading-subject/is-grading-done";
     SharedPreferences prefs = await SharedPreferences.getInstance();
@@ -183,7 +205,7 @@ class ShowConferenceProvider extends ChangeNotifier {
     bool resList = (jsonDecode(utf8.decode(res.bodyBytes)) as bool);
     log("REs: " + resList.toString());
 
-    return resList;
+    return !(await isSubscribedToConference(conferenceId) && !resList);
   }
 
   Future<List<Map<String, dynamic>>?> getGradingSubjectOfConferenceToGrade(
@@ -236,8 +258,6 @@ class ShowConferenceProvider extends ChangeNotifier {
       "personId": int.parse(prefs.getString("personId")!),
       "grades": gradingSubjectList
     };
-    print(params);
-    print(jsonEncode(params));
 
     var res = await http.post(
       Uri.parse(apiUrl),
@@ -272,12 +292,7 @@ class ShowConferenceProvider extends ChangeNotifier {
         .toList();
 
     log("duzina listE:    " + resList.length.toString());
-    // for (int i = 0; i < resList.length; i++) {
-    //   gradingSubjectList.add(GradingSubject.value(
-    //       resList[i]["gradingSubjectId"],
-    //       resList[i]["gradingSubjectName"],
-    //       resList[i]["grade"]));
-    //}
+
     return resList;
   }
 }
@@ -285,7 +300,7 @@ class ShowConferenceProvider extends ChangeNotifier {
 class GradingSubject {
   late int _gradingSubjectId;
   late String _gradingSubjectName;
-  late double _grade;
+  late double _grade = 0.0;
 
   GradingSubject();
   GradingSubject.value(

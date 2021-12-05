@@ -1,7 +1,6 @@
 import 'dart:convert';
 import 'dart:developer';
 
-import 'package:conference_organizer_app/providers/session_editing_provider.dart';
 import 'package:flutter/material.dart';
 import "package:http/http.dart" as http;
 
@@ -84,7 +83,6 @@ class SupervisingProvider extends ChangeNotifier {
     eventToEdit.setAccessLink(resList["accessLink"]);
     eventToEdit.setAccessPassword(resList["accessPassword"]);
 
-    print(resList.toString());
     eventToEdit._resourcesIdList.clear();
     for (var i = 0; i < (resList['resourceIdList'] as List).length; i++) {
       log("usao u for");
@@ -93,7 +91,6 @@ class SupervisingProvider extends ChangeNotifier {
       eventToEdit.addResourceId((resList['resourceIdList'] as List)[i]);
     }
     log("izasao for");
-    print("resursi " + eventToEdit.resourcesIdList.toString());
 
     await getResourceAll();
     return true;
@@ -117,8 +114,6 @@ class SupervisingProvider extends ChangeNotifier {
       "name": eventToEdit.name,
       "resourceIdList": eventToEdit._resourcesIdList,
     };
-    print(params);
-    print(jsonEncode(params));
     var res = await http.post(
       Uri.parse(apiUrl),
       headers: headers,
