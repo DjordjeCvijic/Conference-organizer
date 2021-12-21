@@ -52,7 +52,7 @@ public class SessionService {
         result.setDescription(session.getDescription());
         result.setLocationId(session.getConference().getLocation().getLocationId());
 
-        DateTimeFormatter formatterForDay = DateTimeFormatter.ofPattern("dd.MM.yyyy");
+        DateTimeFormatter formatterForDay = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         DateTimeFormatter formatterForTime = DateTimeFormatter.ofPattern("HH:mm");
 
         List<Event> eventList=eventService.getEventsOfSession(session);
@@ -69,6 +69,7 @@ public class SessionService {
         DateTimeFormatter format = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss.SSS");
         DateTimeFormatter formatterForTime = DateTimeFormatter.ofPattern("HH:mm");
         List<Event>eventList=new LinkedList<>() ;
+        sessionToEditDto.getEventList().forEach(e-> System.out.println(e.getDate()+" = "+e.getTimeFrom()+" = "+e.getTimeTo()));
         sessionToEditDto.getEventList().forEach(e->eventList.add(new Event(0,e.getName(),e.getDescription(), LocalDateTime.parse(e.getDate(),format), LocalTime.parse(e.getTimeFrom(),formatterForTime),LocalTime.parse(e.getTimeTo(),formatterForTime),"","",null,personService.getPersonByEmail(e.getModeratorEmail()),placeService.getById(e.getPlaceId()),eventTypeService.getById(e.getEventTypeId()),sessionToSave)));
 
         eventList.forEach(e->eventService.save(e));

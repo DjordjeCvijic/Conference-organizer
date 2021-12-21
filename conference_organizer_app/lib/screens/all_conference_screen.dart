@@ -104,7 +104,7 @@ class _AllConferenceScreenState extends State<AllConferenceScreen> {
                           )
                         : Center(
                             child: Text(
-                              "Nema podataka,",
+                              "No data",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           )),

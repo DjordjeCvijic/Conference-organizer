@@ -94,7 +94,7 @@ class _SupervisingScreenState extends State<SupervisingScreen> {
                           )
                         : Center(
                             child: Text(
-                              "Nema podataka,",
+                              "No data",
                               style: Theme.of(context).textTheme.bodyText1,
                             ),
                           )),

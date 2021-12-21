@@ -1,7 +1,6 @@
 import 'dart:developer';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import "../globals.dart" as globals;
 
 class ConferenceCard extends StatelessWidget {
@@ -40,17 +39,17 @@ class ConferenceCard extends StatelessWidget {
                 const SizedBox(
                   height: 10,
                 ),
-                Text("  mjest ${data!["location"]}",
+                Text("  Place: ${data!["location"]}",
                     style: Theme.of(context).textTheme.bodyText1),
                 const SizedBox(
                   height: 10,
                 ),
-                Text("  vrijeme od ${data!["dateFrom"]}  ",
+                Text("  From date: ${data!["dateFrom"]}  ",
                     style: Theme.of(context).textTheme.bodyText1),
                 const SizedBox(
                   height: 10,
                 ),
-                Text("  vrijeme do ${data!["dateTo"]}",
+                Text("  To date: ${data!["dateTo"]}",
                     style: Theme.of(context).textTheme.bodyText1),
                 const SizedBox(
                   height: 20,
@@ -58,7 +57,7 @@ class ConferenceCard extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    Text("kreator ${data!["creatorEmail"]}  ",
+                    Text("Creator: ${data!["creatorEmail"]}  ",
                         style: Theme.of(context).textTheme.bodyText1),
                   ],
                 ),

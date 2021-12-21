@@ -43,7 +43,7 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
     return ChangeNotifierProvider(
         create: (context) => PersonProvider(),
         builder: (context, child) => AlertDialog(
-              title: const Text("Unesite "),
+              title: const Text("Enter event data "),
               content: SizedBox(
                 height: 400,
                 width: 450,
@@ -53,11 +53,11 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Naslov", textAlign: TextAlign.left),
+                        const Text("Name", textAlign: TextAlign.left),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field name must not be empty !';
                             }
                             return null;
                           },
@@ -82,11 +82,11 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const Text("Opis", textAlign: TextAlign.left),
+                        const Text("Description", textAlign: TextAlign.left),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field description must not be empty !';
                             }
                             return null;
                           },
@@ -111,11 +111,11 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const Text("moderator", textAlign: TextAlign.left),
+                        const Text("Moderator", textAlign: TextAlign.left),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field moderator must not be empty !';
                             }
                             return null;
                           },
@@ -144,7 +144,7 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                           const Expanded(
                             flex: 2,
                             child: Text(
-                              "EventType:",
+                              "Event type:",
                               textAlign: TextAlign.left,
                               // style: Theme.of(context).textTheme.headline2
                             ),
@@ -190,7 +190,7 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                         const SizedBox(
                           height: 10,
                         ),
-                        DatePickerWidget(widget.eventToUpdate, "datum pocetka"),
+                        DatePickerWidget(widget.eventToUpdate, "Date"),
                         const SizedBox(
                           height: 18,
                         ),
@@ -199,14 +199,14 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                             Expanded(
                                 flex: 1,
                                 child: TimePickerWidget(
-                                    widget.eventToUpdate, "pocetak", 1)),
+                                    widget.eventToUpdate, "Start: ", 1)),
                             const SizedBox(
                               width: 12,
                             ),
                             Expanded(
                                 flex: 1,
                                 child: TimePickerWidget(
-                                    widget.eventToUpdate, "kraj ", 2))
+                                    widget.eventToUpdate, "End: ", 2))
                           ],
                         ),
                       ],
@@ -219,7 +219,7 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Odustani'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                     onPressed: () {
@@ -253,7 +253,7 @@ class _AlertDialogAddEditEvent extends State<AlertDialogAddEditEvent> {
                         });
                       }
                     },
-                    child: const Text('sacuvaj'))
+                    child: const Text('Save'))
               ],
             ));
   }
@@ -418,7 +418,9 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
   void initState() {
     super.initState();
     if (widget.eventToEdit.date != "") {
-      selectedDate = DateTime.parse(widget.eventToEdit.date);
+      log("izabrani datum je " +
+          DateTime.parse(widget.eventToEdit.date).toString());
+      //selectedDate = DateTime.parse(widget.eventToEdit.date);
     }
     _text = widget.text;
   }
@@ -438,6 +440,7 @@ class _DatePickerWidgetState extends State<DatePickerWidget> {
         // } else {
         //   conferenceProvider.conferenceToSave.setDateTo(picked.toString());
         // }
+        log("izabrani datum u set state je " + picked.toString());
         selectedDate = picked;
       });
     }
@@ -504,6 +507,10 @@ class _TimePickerWidget extends State<TimePickerWidget> {
   @override
   void initState() {
     super.initState();
+    log("VRIJEMEEEE  u uinit state" +
+        selectedTime.hour.toString() +
+        "" +
+        selectedTime.minute.toString());
     if ((widget.eventToEdit.timeFrom != "" && widget.category == 1) ||
         (widget.eventToEdit.timeTo != "" && widget.category == 2)) {
       if (widget.category == 1) {
@@ -519,28 +526,40 @@ class _TimePickerWidget extends State<TimePickerWidget> {
       }
     }
     if (widget.category == 1) {
-      log("jedan je");
-      widget.eventToEdit.setTimeFrom(selectedTime.toString());
+      log("jedan je" +
+          selectedTime.hour.toString() +
+          "" +
+          selectedTime.minute.toString());
+      widget.eventToEdit.setTimeFrom(
+          selectedTime.hour.toString() + "" + selectedTime.minute.toString());
     } else {
-      log("dv je");
-      widget.eventToEdit.setTimeto(selectedTime.toString());
+      log("dv je" + selectedTime.toString());
+      widget.eventToEdit.setTimeto(
+          selectedTime.hour.toString() + "" + selectedTime.minute.toString());
     }
 
     _text = widget.text;
   }
 
-  Future<void> _selectDate(BuildContext context,
+  Future<void> _selectTime(BuildContext context,
       SessionEditingProvider sessionEditingProvider) async {
     final TimeOfDay? picked =
         await showTimePicker(context: context, initialTime: selectedTime);
     // firstDate: DateTime(2015, 8),
     // lastDate: DateTime(2101));
+    log("vremena koje je izabrano" + picked.toString().substring(10, 15));
     if (picked != null && picked != selectedTime) {
       setState(() {
         if (widget.category == 1) {
-          widget.eventToEdit.setTimeFrom(picked.toString().substring(10, 15));
+          log("postavljeno virjeme " +
+              picked.hour.toString() +
+              ":" +
+              picked.minute.toString());
+          widget.eventToEdit.setTimeFrom(
+              picked.hour.toString() + ":" + picked.minute.toString());
         } else {
-          widget.eventToEdit.setTimeto(picked.toString().substring(10, 15));
+          widget.eventToEdit.setTimeto(
+              picked.hour.toString() + ":" + picked.minute.toString());
         }
         selectedTime = picked;
       });
@@ -551,6 +570,10 @@ class _TimePickerWidget extends State<TimePickerWidget> {
   Widget build(BuildContext context) {
     final _sessionEditingProvider =
         Provider.of<SessionEditingProvider>(context, listen: false);
+    log(selectedTime.hour.toString() +
+        "" +
+        selectedTime.minute.toString() +
+        " vrijeeeeeee");
     return Center(
       child: Padding(
         padding: const EdgeInsets.fromLTRB(0, 0, 0, 0),
@@ -573,9 +596,11 @@ class _TimePickerWidget extends State<TimePickerWidget> {
                         RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(28.0),
                     ))),
-                onPressed: () => _selectDate(context, _sessionEditingProvider),
+                onPressed: () => _selectTime(context, _sessionEditingProvider),
                 // label: Text("${selectedDate.toLocal()}".split(' ')[0]),
-                label: Text(selectedTime.toString().substring(10, 15)),
+                label: Text(selectedTime.hour.toString() +
+                    ":" +
+                    selectedTime.minute.toString()),
                 icon: const Icon(
                   Icons.access_time_filled_rounded,
                   color: Colors.white,

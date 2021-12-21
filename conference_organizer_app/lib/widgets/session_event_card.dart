@@ -62,7 +62,7 @@ class _SessionEventCardState extends State<SessionEventCard> {
                         ),
                         Padding(
                           padding: const EdgeInsets.fromLTRB(5, 0, 5, 0),
-                          child: Text("U sklopu ${widget.data!["partOfName"]}",
+                          child: Text("Part of: ${widget.data!["partOfName"]}",
                               style: Theme.of(context).textTheme.bodyText1),
                         ),
                       ],
@@ -167,7 +167,7 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
     return ChangeNotifierProvider(
         create: (context) => PersonProvider(),
         builder: (context, child) => AlertDialog(
-              title: const Text("Unesite "),
+              title: const Text("Enter event data "),
               content: SizedBox(
                 height: 400,
                 width: 450,
@@ -177,11 +177,11 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const Text("Naziv", textAlign: TextAlign.left),
+                        const Text("Name", textAlign: TextAlign.left),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field name must not be empty !';
                             }
                             return null;
                           },
@@ -206,11 +206,11 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                         const SizedBox(
                           height: 15,
                         ),
-                        const Text("Opis", textAlign: TextAlign.left),
+                        const Text("Description", textAlign: TextAlign.left),
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field description must not be empty !';
                             }
                             return null;
                           },
@@ -239,7 +239,7 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                         TextFormField(
                           validator: (value) {
                             if (value == null || value.isEmpty) {
-                              return 'Polje ne smije biti prazno!';
+                              return 'The field lecturer must not be empty !';
                             }
                             return null;
                           },
@@ -273,13 +273,13 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                                           const SizedBox(
                                             height: 15,
                                           ),
-                                          const Text("Acces Link",
+                                          const Text("Access link",
                                               textAlign: TextAlign.left),
                                           TextFormField(
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
-                                                return 'Polje ne smije biti prazno!';
+                                                return 'The field access link must not be empty !';
                                               }
                                               return null;
                                             },
@@ -307,13 +307,13 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                                           const SizedBox(
                                             height: 15,
                                           ),
-                                          const Text("Access Password",
+                                          const Text("Access password",
                                               textAlign: TextAlign.left),
                                           TextFormField(
                                             validator: (value) {
                                               if (value == null ||
                                                   value.isEmpty) {
-                                                return 'Polje ne smije biti prazno!';
+                                                return 'The field access password must not be empty !';
                                               }
                                               return null;
                                             },
@@ -354,7 +354,7 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Odustani'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                     onPressed: () {
@@ -381,7 +381,7 @@ class _AlertDialogEditEvent extends State<AlertDialogEditEvent> {
                         });
                       }
                     },
-                    child: const Text('sacuvaj'))
+                    child: const Text('Save'))
               ],
             ));
   }

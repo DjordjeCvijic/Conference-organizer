@@ -97,7 +97,7 @@ private ResourceService resourceService;
             dto.setAccessLink(e.getAccessLink());
             dto.setAccessPassword(e.getAccessPassword());
             dto.setOnline(e.getSession().getIsOnline());
-            dto.setLecturerEmail(e.getLecturer().getEmail());
+            dto.setLecturerEmail(e.getLecturer()!=null?e.getLecturer().getEmail():"");
             dto.setEventType(e.getEventType().getName());
 
             res.add(dto);

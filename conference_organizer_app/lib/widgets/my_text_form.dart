@@ -1,19 +1,22 @@
 import 'package:flutter/material.dart';
 
 class MyTextForm extends StatelessWidget {
-  const MyTextForm({
-    Key? key,
-    required TextEditingController textFildController,
-    required String errorMsg,
-    required String hint,
-  })  : _textFildController = textFildController,
+  const MyTextForm(
+      {Key? key,
+      required TextEditingController textFildController,
+      required String errorMsg,
+      required String hint,
+      required bool fildForPass})
+      : _textFildController = textFildController,
         _hint = hint,
         _errorMsg = errorMsg,
+        _fildForPass = fildForPass,
         super(key: key);
 
   final TextEditingController _textFildController;
   final String _hint;
   final String _errorMsg;
+  final bool _fildForPass;
 
   @override
   Widget build(BuildContext context) {
@@ -24,6 +27,9 @@ class MyTextForm extends StatelessWidget {
         }
         return null;
       },
+      obscureText: _fildForPass,
+      enableSuggestions: !_fildForPass,
+      autocorrect: !_fildForPass,
       controller: _textFildController,
       cursorColor: Colors.black,
       decoration: InputDecoration(

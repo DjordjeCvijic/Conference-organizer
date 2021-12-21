@@ -45,7 +45,7 @@ class ShowConferenceScreen extends StatelessWidget {
                                     padding:
                                         const EdgeInsets.fromLTRB(15, 0, 15, 0),
                                     child: Column(children: [
-                                      const MyDivider("Opsti podaci"),
+                                      const MyDivider("General data"),
                                       const SizedBox(
                                         height: 17,
                                       ),
@@ -109,9 +109,13 @@ class ShowConferenceScreen extends StatelessWidget {
                                           Expanded(
                                               flex: 2,
                                               child: Text(
-                                                  snapshot.data!["dateFrom"] +
+                                                  snapshot.data!["dateFrom"]
+                                                          .toString()
+                                                          .substring(0, 10) +
                                                       " - " +
-                                                      snapshot.data!["dateTo"],
+                                                      snapshot.data!["dateTo"]
+                                                          .toString()
+                                                          .substring(0, 10),
                                                   style: const TextStyle(
                                                       fontSize: 18,
                                                       color: Colors.white))),
@@ -579,7 +583,9 @@ class _EventBoxState extends State<EventBox> {
                                 flex: 2,
                                 child: Text(
                                     widget.data[selectedElement]
-                                        ["lecturerEmail"],
+                                        ["lecturerEmail"]
+                                    
+                                    ,
                                     style: const TextStyle(
                                         fontSize: 15, color: Colors.white))),
                           ],
@@ -599,7 +605,9 @@ class _EventBoxState extends State<EventBox> {
                             Expanded(
                                 flex: 2,
                                 child: Text(
-                                    widget.data[selectedElement]["date"],
+                                    widget.data[selectedElement]["date"]
+                                        .toString()
+                                        .substring(0, 10),
                                     style: const TextStyle(
                                         fontSize: 15, color: Colors.white))),
                           ],
@@ -657,7 +665,7 @@ class _EventBoxState extends State<EventBox> {
                                 children: [
                                   const Expanded(
                                     flex: 1,
-                                    child: Text("Acces Link:",
+                                    child: Text("Access Link:",
                                         textAlign: TextAlign.left,
                                         style: TextStyle(
                                             fontSize: 19, color: Colors.white)),

@@ -53,7 +53,7 @@ class SessionEditingScreen extends StatelessWidget {
                                             padding: const EdgeInsets.fromLTRB(
                                                 15, 0, 15, 0),
                                             child: Column(children: [
-                                              const MyDivider("Opsti podaci"),
+                                              const MyDivider("General data"),
                                               const SizedBox(
                                                 height: 15,
                                               ),
@@ -74,7 +74,7 @@ class SessionEditingScreen extends StatelessWidget {
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
-                                                          return "morate unijeti naziv";
+                                                          return "The field name must not be empty !";
                                                         }
                                                         return null;
                                                       },
@@ -134,7 +134,7 @@ class SessionEditingScreen extends StatelessWidget {
                                                       validator: (value) {
                                                         if (value == null ||
                                                             value.isEmpty) {
-                                                          return "morate inijeti opis";
+                                                          return "The field description must not be empty ";
                                                         }
                                                         return null;
                                                       },
@@ -176,116 +176,12 @@ class SessionEditingScreen extends StatelessWidget {
                                               const SizedBox(
                                                 height: 30,
                                               ),
-                                              // Row(children: [
-                                              //   Expanded(
-                                              //     flex: 1,
-                                              //     child: Text("conference location:",
-                                              //         textAlign: TextAlign.left,
-                                              //         style: Theme.of(context).textTheme.headline2),
-                                              //   ),
-                                              //   Expanded(
-                                              //       flex: 2,
-                                              //       child: FutureBuilder(
-                                              //           future: _locationProvider.getAllLocations(),
-                                              //           builder: (context,
-                                              //                   AsyncSnapshot<bool?> snapshot) =>
-                                              //               snapshot.connectionState ==
-                                              //                       ConnectionState.waiting
-                                              //                   ? const CircularProgressIndicator()
-                                              //                   : const DropDownButton()))
-                                              // ]),
                                             ]),
                                           ),
                                         )),
                                         const SizedBox(
                                           width: 8,
                                         ),
-                                        // Expanded(
-                                        //   child: Container(
-                                        //     color: Colors.grey[800],
-                                        //     height: 600,
-                                        //     child: Column(
-                                        //       children: [
-                                        //         const MyDivider("trajanje konferencije"),
-                                        //         const SizedBox(
-                                        //           height: 10,
-                                        //         ),
-                                        //         const DatePickerWidget(1, "datum pocetka"),
-                                        //         const SizedBox(
-                                        //           height: 30,
-                                        //         ),
-                                        //         const DatePickerWidget(2, "datum kraja"),
-                                        //         const SizedBox(
-                                        //           height: 30,
-                                        //         ),
-                                        //         const MyDivider("Grading subject"),
-                                        //         const Padding(
-                                        //           padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
-                                        //           child: SizedBox(
-                                        //               height: 286, child: GradingSubjectBox()),
-                                        //         ),
-                                        //         ElevatedButton(
-                                        //             onPressed: () {
-                                        //               _conferenceProvider.conferenceToSave
-                                        //                   .setName(_nameController.text);
-                                        //               _conferenceProvider.conferenceToSave
-                                        //                   .setDescription(
-                                        //                       _descriptionController.text);
-                                        //               _conferenceProvider
-                                        //                   .saveConference()
-                                        //                   .then((value) {
-                                        //                 if (value) {
-                                        //                   showDialog<String>(
-                                        //                     context: context,
-                                        //                     builder: (BuildContext context) =>
-                                        //                         AlertDialog(
-                                        //                       title: const Text('Obavjestenje'),
-                                        //                       content: const Text(
-                                        //                           'Konferencija sacuvana'),
-                                        //                       actions: <Widget>[
-                                        //                         TextButton(
-                                        //                           onPressed: () => Navigator.pop(
-                                        //                               context, 'Cancel'),
-                                        //                           child: const Text('Cancel'),
-                                        //                         ),
-                                        //                         TextButton(
-                                        //                           onPressed: () =>
-                                        //                               Navigator.pop(context, 'OK'),
-                                        //                           child: const Text('OK'),
-                                        //                         ),
-                                        //                       ],
-                                        //                     ),
-                                        //                   );
-                                        //                 } else {
-                                        //                   showDialog<String>(
-                                        //                     context: context,
-                                        //                     builder: (BuildContext context) =>
-                                        //                         AlertDialog(
-                                        //                       title: const Text('Obavjestenje'),
-                                        //                       content:
-                                        //                           const Text('Doslo je do greske'),
-                                        //                       actions: <Widget>[
-                                        //                         TextButton(
-                                        //                           onPressed: () => Navigator.pop(
-                                        //                               context, 'Cancel'),
-                                        //                           child: const Text('Cancel'),
-                                        //                         ),
-                                        //                         TextButton(
-                                        //                           onPressed: () =>
-                                        //                               Navigator.pop(context, 'OK'),
-                                        //                           child: const Text('OK'),
-                                        //                         ),
-                                        //                       ],
-                                        //                     ),
-                                        //                   );
-                                        //                 }
-                                        //               });
-                                        //             },
-                                        //             child: const Text("save")),
-                                        //       ],
-                                        //     ),
-                                        //   ),
-                                        // ),
                                         const SizedBox(
                                           width: 8,
                                         ),
@@ -296,7 +192,7 @@ class SessionEditingScreen extends StatelessWidget {
                                             height: 600,
                                             child: Column(
                                               children: [
-                                                const MyDivider("Dodaj event"),
+                                                const MyDivider("Add event"),
                                                 const Padding(
                                                   padding: EdgeInsets.fromLTRB(
                                                       15, 0, 15, 0),
@@ -333,9 +229,9 @@ class SessionEditingScreen extends StatelessWidget {
                                                                     context) =>
                                                                 AlertDialog(
                                                               title: const Text(
-                                                                  'Obavjestenje'),
+                                                                  'Information'),
                                                               content: const Text(
-                                                                  'Sesija sacuvana'),
+                                                                  'Session was successfully saved'),
                                                               actions: <Widget>[
                                                                 TextButton(
                                                                   onPressed: () =>
@@ -364,9 +260,9 @@ class SessionEditingScreen extends StatelessWidget {
                                                                     context) =>
                                                                 AlertDialog(
                                                               title: const Text(
-                                                                  'Obavjestenje'),
+                                                                  'Warning'),
                                                               content: const Text(
-                                                                  'Doslo je do greske'),
+                                                                  'An error has occurred'),
                                                               actions: <Widget>[
                                                                 TextButton(
                                                                   onPressed: () =>

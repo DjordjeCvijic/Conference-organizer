@@ -35,14 +35,16 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 20),
                   Text(
-                    "E-mail",
+                    "Email",
                     style: Theme.of(context).textTheme.headline2,
                   ),
                   const SizedBox(height: 7),
                   MyTextForm(
-                      textFildController: _emailController,
-                      hint: "e-mail",
-                      errorMsg: "Polje e-mail ne smije biti prazno!"),
+                    textFildController: _emailController,
+                    hint: "email",
+                    errorMsg: "The field email must not be empty!",
+                    fildForPass: false,
+                  ),
                   const SizedBox(height: 30),
                   Text(
                     "Password",
@@ -50,9 +52,11 @@ class LoginScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 7),
                   MyTextForm(
-                      textFildController: _passController,
-                      errorMsg: "Polje password ne smije biti prazno !",
-                      hint: "password"),
+                    textFildController: _passController,
+                    errorMsg: "The field password must not be empty !",
+                    hint: "password",
+                    fildForPass: true,
+                  ),
                   const SizedBox(height: 20),
                   Consumer<AuthProvider>(
                       builder: (context, loginProvider, child) =>
@@ -80,9 +84,9 @@ class LoginScreen extends StatelessWidget {
                                       showDialog(
                                         context: context,
                                         builder: (_) => AlertDialog(
-                                          title: const Text('Pažnja!'),
+                                          title: const Text('Warning!'),
                                           content: const Text(
-                                              'Došlo je do greške prilikom prijave, provjerite kredencijale i pokušajte ponovo.'),
+                                              'An error has occurred, check the credentials and try again.'),
                                           actions: [
                                             TextButton(
                                               onPressed: () {
@@ -112,7 +116,6 @@ class LoginScreen extends StatelessWidget {
                               fontSize: 15, color: Colors.white),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              log("stisnuo");
                               Navigator.pushNamed(
                                   context, globals.registrationScreenRoute);
                             }),

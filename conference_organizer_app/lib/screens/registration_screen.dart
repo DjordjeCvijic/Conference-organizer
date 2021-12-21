@@ -39,9 +39,11 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 7),
                         MyTextForm(
-                            textFildController: _firstNameController,
-                            errorMsg: "Polje first name ne smije biti prazno!",
-                            hint: "first name"),
+                          textFildController: _firstNameController,
+                          errorMsg: "The field first name must not be empty !",
+                          hint: "first name",
+                          fildForPass: false,
+                        ),
                         const SizedBox(height: 30),
                         Text(
                           "Last name",
@@ -49,19 +51,23 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 7),
                         MyTextForm(
-                            textFildController: _lastNameController,
-                            errorMsg: "Polje last name ne smije biti prazno!",
-                            hint: "last name"),
+                          textFildController: _lastNameController,
+                          errorMsg: "The field last name must not be empty !",
+                          hint: "last name",
+                          fildForPass: false,
+                        ),
                         const SizedBox(height: 30),
                         Text(
-                          "E-mail",
+                          "Email",
                           style: Theme.of(context).textTheme.headline2,
                         ),
                         const SizedBox(height: 7),
                         MyTextForm(
-                            textFildController: _emailController,
-                            errorMsg: "Polje e-mail ne smije biti prazno!",
-                            hint: "e-mail"),
+                          textFildController: _emailController,
+                          errorMsg: "The field email must not be empty !",
+                          hint: "email",
+                          fildForPass: false,
+                        ),
                         const SizedBox(height: 30),
                         Text(
                           "Password",
@@ -69,9 +75,11 @@ class RegistrationScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 7),
                         MyTextForm(
-                            textFildController: _passController,
-                            errorMsg: "Polje password ne smije biti prazno!",
-                            hint: "pasword"),
+                          textFildController: _passController,
+                          errorMsg: "The field password must not be empty !",
+                          hint: "pasword",
+                          fildForPass: true,
+                        ),
                         const SizedBox(height: 20),
                         ElevatedButton(
                             style: ButtonStyle(
@@ -98,10 +106,10 @@ class RegistrationScreen extends StatelessWidget {
                                   showDialog(
                                     context: context,
                                     builder: (context) => AlertDialog(
-                                      title: const Text('Pažnja!'),
+                                      title: const Text('Information!'),
                                       content: Text(value
-                                          ? "Uspijesno ste se registrovali !"
-                                          : 'Došlo je do greške prilikom registracije. Email korisnika vec ppostoji.'),
+                                          ? "You have successfully registered !"
+                                          : 'There was a registration error. User email already exists.'),
                                       actions: [
                                         TextButton(
                                           onPressed: () {

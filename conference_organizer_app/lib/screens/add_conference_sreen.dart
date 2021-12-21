@@ -42,7 +42,7 @@ class AddConferenceScreen extends StatelessWidget {
                       child: Padding(
                         padding: const EdgeInsets.fromLTRB(15, 0, 15, 0),
                         child: Column(children: [
-                          const MyDivider("Opsti podaci"),
+                          const MyDivider("General data"),
                           const SizedBox(
                             height: 10,
                           ),
@@ -60,7 +60,7 @@ class AddConferenceScreen extends StatelessWidget {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "morate unijeti naziv";
+                                      return "The field name must not be empty";
                                     }
                                     return null;
                                   },
@@ -101,7 +101,7 @@ class AddConferenceScreen extends StatelessWidget {
                                 child: TextFormField(
                                   validator: (value) {
                                     if (value == null || value.isEmpty) {
-                                      return "morate inijeti opis";
+                                      return "The field description must not be empty";
                                     }
                                     return null;
                                   },
@@ -133,7 +133,7 @@ class AddConferenceScreen extends StatelessWidget {
                           Row(children: [
                             Expanded(
                               flex: 1,
-                              child: Text("conference location:",
+                              child: Text("Conference location:",
                                   textAlign: TextAlign.left,
                                   style: Theme.of(context).textTheme.headline2),
                             ),
@@ -160,15 +160,15 @@ class AddConferenceScreen extends StatelessWidget {
                         height: 600,
                         child: Column(
                           children: [
-                            const MyDivider("trajanje konferencije"),
+                            const MyDivider("Conference duration"),
                             const SizedBox(
                               height: 10,
                             ),
-                            const DatePickerWidget(1, "datum pocetka"),
+                            const DatePickerWidget(1, "From date"),
                             const SizedBox(
                               height: 30,
                             ),
-                            const DatePickerWidget(2, "datum kraja"),
+                            const DatePickerWidget(2, "To date"),
                             const SizedBox(
                               height: 30,
                             ),
@@ -193,9 +193,9 @@ class AddConferenceScreen extends StatelessWidget {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
-                                          title: const Text('Obavjestenje'),
+                                          title: const Text('Information'),
                                           content: const Text(
-                                              'Konferencija sacuvana'),
+                                              'Conference was successfully saved'),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () => Navigator.pop(
@@ -215,9 +215,9 @@ class AddConferenceScreen extends StatelessWidget {
                                         context: context,
                                         builder: (BuildContext context) =>
                                             AlertDialog(
-                                          title: const Text('Obavjestenje'),
-                                          content:
-                                              const Text('Doslo je do greske'),
+                                          title: const Text('Information'),
+                                          content: const Text(
+                                              'An error has occurred !'),
                                           actions: <Widget>[
                                             TextButton(
                                               onPressed: () => Navigator.pop(
@@ -235,7 +235,7 @@ class AddConferenceScreen extends StatelessWidget {
                                     }
                                   });
                                 },
-                                child: const Text("save")),
+                                child: const Text("Save")),
                           ],
                         ),
                       ),
@@ -250,7 +250,7 @@ class AddConferenceScreen extends StatelessWidget {
                       height: 600,
                       child: Column(
                         children: const [
-                          MyDivider("Dodaj sesije"),
+                          MyDivider("Add session"),
                           Padding(
                             padding: EdgeInsets.fromLTRB(15, 0, 15, 0),
                             child: SizedBox(
@@ -697,7 +697,7 @@ class AlertDialogForGradingSubjects extends StatelessWidget {
         Provider.of<ConferenceProvider>(context, listen: false);
     var _enterController = TextEditingController(text: text);
     return AlertDialog(
-      title: const Text("Unesite "),
+      title: const Text("Enter the grading subject "),
       content: SizedBox(
         height: 150,
         width: 350,
@@ -706,7 +706,7 @@ class AlertDialogForGradingSubjects extends StatelessWidget {
           child: TextFormField(
             validator: (value) {
               if (value == null || value.isEmpty) {
-                return 'Polje ne smije biti prazno!';
+                return 'The field must not be empty!';
               }
               return null;
             },
@@ -733,7 +733,7 @@ class AlertDialogForGradingSubjects extends StatelessWidget {
           onPressed: () {
             Navigator.of(context).pop();
           },
-          child: const Text('Odustani'),
+          child: const Text('Cancel'),
         ),
         TextButton(
             onPressed: () {
@@ -750,7 +750,7 @@ class AlertDialogForGradingSubjects extends StatelessWidget {
                 callBackFuncion();
               }
             },
-            child: const Text('sacuvaj'))
+            child: const Text('Save'))
       ],
     );
   }
@@ -796,7 +796,7 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
     return ChangeNotifierProvider(
         create: (context) => PersonProvider(),
         builder: (context, child) => AlertDialog(
-              title: const Text("Unesite "),
+              title: const Text("Enter session data "),
               content: SizedBox(
                 height: 400,
                 width: 450,
@@ -805,11 +805,11 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const Text("Naslov", textAlign: TextAlign.left),
+                      const Text("Name", textAlign: TextAlign.left),
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Polje ne smije biti prazno!';
+                            return 'The field name must not be empty!';
                           }
                           return null;
                         },
@@ -834,11 +834,11 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text("opsoi", textAlign: TextAlign.left),
+                      const Text("Description", textAlign: TextAlign.left),
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Polje ne smije biti prazno!';
+                            return 'The field description must not be empty!';
                           }
                           return null;
                         },
@@ -863,11 +863,11 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
                       const SizedBox(
                         height: 15,
                       ),
-                      const Text("moderator", textAlign: TextAlign.left),
+                      const Text("Moderator", textAlign: TextAlign.left),
                       TextFormField(
                         validator: (value) {
                           if (value == null || value.isEmpty) {
-                            return 'Polje ne smije biti prazno!';
+                            return 'The field moderator must not be empty!';
                           }
                           return null;
                         },
@@ -916,7 +916,7 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
                   onPressed: () {
                     Navigator.of(context).pop();
                   },
-                  child: const Text('Odustani'),
+                  child: const Text('Cancel'),
                 ),
                 TextButton(
                     onPressed: () {
@@ -947,7 +947,7 @@ class _AlertDialogForSessionState extends State<AlertDialogForSession> {
                         });
                       }
                     },
-                    child: const Text('sacuvaj'))
+                    child: const Text('Save'))
               ],
             ));
   }

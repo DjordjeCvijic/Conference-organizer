@@ -43,19 +43,6 @@ class NavigationDrawerState extends State<NavigationDrawer> {
       create: (context) => SupervisingProvider(),
       child: const SupervisingScreen(),
     ),
-    // 0: ChangeNotifierProvider(
-    //   create: (context) => HomeProvider(),
-    //   child: const HomeScreen(),
-    // ),
-    // 1: ChangeNotifierProvider(
-    //   create: (context) => ContentProvider(),
-    //   child: const SearchScreen(),
-    // ),
-    // 2: ChangeNotifierProvider.value(
-    //   value: FavouritesProvider(),
-    //   child: const FavoritesScreen(),
-    // ),
-    // 3: const SettingsScreen()
   };
 
   final drawerItems = [
@@ -123,7 +110,7 @@ class NavigationDrawerState extends State<NavigationDrawer> {
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w500),
                                 )
-                              : const Text("nema podataka"),
+                              : const Text("No data"),
                 ),
                 accountEmail: FutureBuilder(
                   future: sharedPreferencesService.getLogedUserEmail(),
@@ -139,7 +126,7 @@ class NavigationDrawerState extends State<NavigationDrawer> {
                                       fontSize: 18.0,
                                       fontWeight: FontWeight.w500),
                                 )
-                              : const Text("nema podataka"),
+                              : const Text("No data"),
                 )),
             Column(children: drawerOptions)
           ],

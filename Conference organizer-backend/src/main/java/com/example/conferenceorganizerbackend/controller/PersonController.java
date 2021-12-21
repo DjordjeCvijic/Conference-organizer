@@ -29,7 +29,6 @@ public class PersonController {
 
 
     @PostMapping("/login")
-
     public Person login(@RequestBody LoginRequest loginRequest) throws NotFoundException, NoSuchAlgorithmException {
         return personService.login(loginRequest);
 
